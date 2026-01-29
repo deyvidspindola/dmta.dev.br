@@ -54,7 +54,7 @@
             </div>
             <div class="itoffcanvas__logo">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('assets/img/logo/logo-white.png') }}" alt="">
+                    <img src="{{ asset('assets/img/logo/DMTA.png') }}" alt="">
                 </a>
             </div>
             <div class="itoffcanvas__text">
