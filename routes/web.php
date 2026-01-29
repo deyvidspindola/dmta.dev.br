@@ -7,9 +7,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/sobre', function () {
-    return view('home');
+    return view('about');
 })->name('about');
 
 Route::get('/contato', function () {
-    return view('home');
+    return view('contact');
 })->name('contact');

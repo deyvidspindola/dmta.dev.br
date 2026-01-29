@@ -18,8 +18,7 @@
                             </div>
                             <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 wow itfadeUp" data-wow-delay=".2s">
                                 <div class="tv-footer-top-right widget">
-                                    <p>Monotonectally synergize granular markets and front market Collaboratively
-                                        visualize strat fomediaries after based after models, Synergistically task.</p>
+                                    <p>Transformamos ideias em soluções tecnológicas inovadoras. Nossa equipe especializada está pronta para desenvolver projetos personalizados que impulsionam o crescimento do seu negócio com qualidade e eficiência.</p>
                                     <a href="{{ route('contact') }}" class="tv-btn-primary mt-74 p-relative">
                                         <span class="btn-wrap">
                                             <span class="btn-text1">Solicite um Orçamento</span>
