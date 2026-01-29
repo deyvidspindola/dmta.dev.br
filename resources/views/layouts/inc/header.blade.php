@@ -17,17 +17,17 @@
                                             <a href="{{ route('home') }}">Home</a>
                                         </li>
                                         <li>
-                                            <a href="about.html">Sobre Nós</a>
+                                            <a href="{{ route('about') }}">Sobre Nós</a>
                                         </li>
-                                        <li class="has-dropdown">
+                                        {{-- <li class="has-dropdown">
                                             <a href="service.html">Serviços</a>
                                             <ul class="tv-submenu submenu">
                                                 <li><a href="service.html">Service</a></li>
                                                 <li><a href="service-details.html">Services Details</a></li>
                                             </ul>
-                                        </li>
+                                        </li> --}}
                                         <li>
-                                            <a href="contact.html">Contato</a>
+                                            <a href="{{ route('contact') }}">Contato</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-xxl-3 col-xl-3 col-6">
                             <div class="tv-header-right-action d-flex justify-content-end align-items-center">
-                                <a href="contact.html" class="tv-btn-primary p-relative d-none d-xxl-block">
+                                <a href="{{ route('contact') }}" class="tv-btn-primary p-relative d-none d-xxl-block">
                                     <span class="btn-wrap">
                                         <span class="btn-text1">Solicite um Orçamento</span>
                                         <span class="btn-text2">Solicite um Orçamento</span>

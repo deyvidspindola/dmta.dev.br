@@ -10,9 +10,9 @@
                                     <h1 class="tv-spltv-text tv-spltv-in-right">Let’s Work Together.</h1>
                                     <ul>
                                         <li><a href="{{ route('home') }}">Home</a></li>
-                                        <li><a href="#">Sobre Nós</a></li>
-                                        <li><a href="#">Serviços</a></li>
-                                        <li><a href="#">Contato</a></li>
+                                        <li><a href="{{ route('about') }}">Sobre Nós</a></li>
+                                        {{-- <li><a href="#">Serviços</a></li> --}}
+                                        <li><a href="{{ route('contact') }}">Contato</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -20,7 +20,7 @@
                                 <div class="tv-footer-top-right widget">
                                     <p>Monotonectally synergize granular markets and front market Collaboratively
                                         visualize strat fomediaries after based after models, Synergistically task.</p>
-                                    <a href="contact.html " class="tv-btn-primary mt-74 p-relative">
+                                    <a href="{{ route('contact') }}" class="tv-btn-primary mt-74 p-relative">
                                         <span class="btn-wrap">
                                             <span class="btn-text1">Solicite um Orçamento</span>
                                             <span class="btn-text2">Solicite um Orçamento</span>
