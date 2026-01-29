@@ -6,7 +6,7 @@
                     <div class="row align-items-center">
                         <div class="col-xxl-2 col-xl-2 col-6">
                             <div class="tv-header-logo">
-                                <a href="{{ route('home') }}"><img src="assets/img/logo/logo-white2.png" alt=""></a>
+                                <a href="{{ route('home') }}"><img src="assets/img/logo/DMTA.png" alt=""></a>
                             </div>
                         </div>
                         <div class=" col-xxl-7 col-xl-7 d-none d-xl-block text-center">
