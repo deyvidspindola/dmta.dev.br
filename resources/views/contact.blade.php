@@ -4,13 +4,19 @@
 @section('meta_description', 'Solicite um orçamento ou fale no WhatsApp com a DMTA. Sites, sistemas e soluções digitais sob medida.')
 
 @section('content')
-    <section class="bg-mesh border-b border-brand-950/5">
-        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-            <p class="text-sm font-bold uppercase tracking-wider text-brand-500">Contato</p>
-            <h1 class="mt-3 max-w-3xl text-4xl font-extrabold sm:text-5xl text-balance">
+    <section class="relative isolate overflow-hidden">
+        <img
+            src="{{ asset('images/marketing/hero-workspace.jpg') }}"
+            alt=""
+            class="absolute inset-0 h-full w-full object-cover"
+        >
+        <div class="absolute inset-0 bg-brand-950/86" aria-hidden="true"></div>
+        <div class="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
+            <p class="font-display text-sm font-bold uppercase tracking-[0.24em] text-brand-300">Contato</p>
+            <h1 class="mt-4 max-w-3xl text-4xl font-extrabold text-white sm:text-5xl text-balance">
                 Vamos tirar seu projeto do papel.
             </h1>
-            <p class="mt-5 max-w-2xl text-lg text-muted">
+            <p class="mt-5 max-w-2xl text-lg text-white/75">
                 Preencha o formulário ou chame no WhatsApp. Respondemos com o próximo passo — objetivo e sem enrolação.
             </p>
         </div>

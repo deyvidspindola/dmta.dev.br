@@ -11,7 +11,7 @@
 <header class="sticky top-0 z-50 border-b border-brand-950/5 bg-white/85 backdrop-blur-md">
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <a href="{{ route('home') }}" class="shrink-0" aria-label="DMTA — Página inicial">
-            <img src="{{ asset('images/brand/dmta-wordmark.svg') }}" alt="DMTA" class="h-8 w-auto" width="168" height="40">
+            <img src="{{ asset('images/brand/dmta-wordmark.svg') }}" alt="DMTA" class="h-8 w-auto" width="178" height="40">
         </a>
 
         <nav class="hidden items-center gap-1 md:flex" aria-label="Principal">

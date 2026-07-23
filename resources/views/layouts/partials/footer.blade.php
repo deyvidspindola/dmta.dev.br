@@ -1,9 +1,9 @@
 <footer class="mt-auto border-t border-brand-950/10 bg-brand-950 text-white">
     <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div class="lg:col-span-5">
-            <img src="{{ asset('images/brand/dmta-wordmark-white.svg') }}" alt="DMTA" class="h-8 w-auto" width="168" height="40">
+            <img src="{{ asset('images/brand/dmta-wordmark-white.svg') }}" alt="DMTA" class="h-9 w-auto" width="178" height="40">
             <p class="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
-                Sites, sistemas e soluções digitais sob medida — com foco em resultado, clareza e suporte de verdade.
+                Sites, sistemas e soluções digitais sob medida — com cara profissional e foco em fechar negócio.
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
                 <x-whatsapp-button variant="on-dark" />
