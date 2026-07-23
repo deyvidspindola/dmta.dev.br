@@ -6,6 +6,63 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+
+    --color-brand-50: #eef2ff;
+    --color-brand-100: #dce4ff;
+    --color-brand-200: #c0cbff;
+    --color-brand-300: #97a8ff;
+    --color-brand-400: #6b7dff;
+    --color-brand-500: #2b4dff;
+    --color-brand-600: #1f3aef;
+    --color-brand-700: #1a2fc7;
+    --color-brand-800: #1a2ba0;
+    --color-brand-900: #1b2a7e;
+    --color-brand-950: #0a165e;
+
+    --color-ink: #0f172a;
+    --color-muted: #475569;
+    --color-surface: #f4f6fb;
+    --color-whatsapp: #25d366;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-surface font-sans text-ink antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        @apply font-display tracking-tight text-brand-950;
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    .bg-mesh {
+        background-color: #f4f6fb;
+        background-image:
+            radial-gradient(ellipse 80% 60% at 10% -10%, rgb(43 77 255 / 0.18), transparent 55%),
+            radial-gradient(ellipse 60% 50% at 100% 0%, rgb(26 47 199 / 0.12), transparent 50%),
+            radial-gradient(ellipse 50% 40% at 50% 100%, rgb(43 77 255 / 0.08), transparent 55%);
+    }
+
+    .bg-hero-grid {
+        background-image:
+            linear-gradient(to right, rgb(10 22 94 / 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(10 22 94 / 0.04) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    }
 }
