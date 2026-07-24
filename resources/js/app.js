@@ -2,9 +2,64 @@ import './bootstrap';
 
 document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
+    initAnchorScroll();
     initReveals();
     initContactForm();
 });
+
+function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function initAnchorScroll() {
+    const stripHash = () => {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    };
+
+    const findTarget = (hash) => {
+        if (!hash || hash === '#') return null;
+
+        try {
+            return document.querySelector(hash);
+        } catch {
+            return null;
+        }
+    };
+
+    const scrollTo = (target, smooth = true) => {
+        target.scrollIntoView({
+            behavior: smooth && !prefersReducedMotion() ? 'smooth' : 'auto',
+            block: 'start',
+        });
+    };
+
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const target = findTarget(link.getAttribute('href'));
+
+            if (!target) return;
+
+            event.preventDefault();
+            scrollTo(target);
+            stripHash();
+        });
+    });
+
+    // Chegou com hash na URL (ex.: redirect do formulário ou link externo):
+    // posiciona na seção e limpa a barra de endereço. Quando há flash de
+    // sucesso/erro, o próprio formulário cuida do scroll.
+    if (window.location.hash && !document.querySelector('[data-flash]')) {
+        const target = findTarget(window.location.hash);
+
+        stripHash();
+
+        if (target) {
+            requestAnimationFrame(() => scrollTo(target, false));
+        }
+    } else if (window.location.hash) {
+        stripHash();
+    }
+}
 
 function initMobileNav() {
     const toggle = document.getElementById('nav-toggle');
