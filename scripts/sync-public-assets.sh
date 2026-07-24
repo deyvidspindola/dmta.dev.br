@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Sincroniza CSS e JS de public/ → public_html/
+# Sincroniza CSS, JS e imagens de public/ → public_html/
 # Uso na HostGator (SSH/Terminal):
 #   cd ~/app/dmta.dev.br
 #   bash scripts/sync-public-assets.sh
@@ -22,19 +22,33 @@ fi
 
 echo "Origem : $SRC"
 echo "Destino: $DEST"
-echo "Copiando apenas .css e .js (estrutura de pastas preservada)..."
+echo "Copiando .css, .js e imagens (estrutura de pastas preservada)..."
 
-# Copia só arquivos .css e .js, mantendo diretórios (css/, js/, build/assets/, etc.)
+# Copia CSS, JS e imagens, mantendo diretórios (css/, js/, build/assets/, images/, etc.)
 if command -v rsync >/dev/null 2>&1; then
   rsync -av \
     --include='*/' \
     --include='*.css' \
     --include='*.js' \
+    --include='*.svg' \
+    --include='*.png' \
+    --include='*.jpg' \
+    --include='*.jpeg' \
+    --include='*.webp' \
+    --include='*.gif' \
+    --include='*.ico' \
+    --include='*.avif' \
     --exclude='*' \
     "$SRC/" "$DEST/"
 else
   # Fallback sem rsync (find + cp)
-  find "$SRC" -type f \( -name '*.css' -o -name '*.js' \) -print0 |
+  find "$SRC" -type f \( \
+    -name '*.css' -o -name '*.js' \
+    -o -name '*.svg' -o -name '*.png' \
+    -o -name '*.jpg' -o -name '*.jpeg' \
+    -o -name '*.webp' -o -name '*.gif' \
+    -o -name '*.ico' -o -name '*.avif' \
+  \) -print0 |
   while IFS= read -r -d '' file; do
     rel="${file#"$SRC"/}"
     target="$DEST/$rel"
@@ -44,7 +58,7 @@ else
   done
 fi
 
-# Vite/Laravel precisa do manifest.json (não é css/js, mas é obrigatório pro Admin V2)
+# Vite/Laravel precisa do manifest.json (não é css/js, mas é obrigatório pro @vite)
 if [[ -f "$SRC/build/manifest.json" ]]; then
   mkdir -p "$DEST/build"
   cp -f "$SRC/build/manifest.json" "$DEST/build/manifest.json"
