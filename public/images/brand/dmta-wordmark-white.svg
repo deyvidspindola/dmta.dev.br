@@ -1,11 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 178 40" fill="none" role="img" aria-label="DMTA">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 40" fill="none" role="img" aria-label="DMTA">
   <rect width="40" height="40" rx="10" fill="#fff"/>
-  <path d="M10 10h12.1c6 0 10 3.55 10 9.3s-4 9.3-10 9.3H10V10zm5.15 5.15v8.3h6.65c2.85 0 4.55-1.55 4.55-4.15s-1.7-4.15-4.55-4.15h-6.65z" fill="#0A165E"/>
-  <path d="M25.4 12.1L32.5 20l-7.1 7.9v-2.95L29.75 20 25.4 15.05V12.1z" fill="#2B4DFF"/>
-  <g fill="#fff">
-    <path d="M54 29.5V10.5h7.35c5.55 0 8.85 3.1 8.85 9.5s-3.3 9.5-8.85 9.5H54zm4.05-3.55h3.15c3.15 0 4.95-1.95 4.95-5.95s-1.8-5.95-4.95-5.95h-3.15v11.9z"/>
-    <path d="M76.8 29.5V10.5h4.05v15.4h8.35V29.5H76.8z"/>
-    <path d="M95.2 29.5V10.5h4.05v19H95.2z"/>
-    <path d="M106.15 29.5V10.5h7.35c4.15 0 6.8 2.15 6.8 5.55 0 2.55-1.45 4.4-3.85 5.2l5.55 8.25h-4.7l-5.05-7.5h-3.05V29.5h-3.05zm3.05-10.7h4.05c1.95 0 3.1-.95 3.1-2.55s-1.15-2.5-3.1-2.5h-4.05v5.05z"/>
-  </g>
+  <path d="M12 10h9.2c5.55 0 9.1 3.2 9.1 9.35S26.75 28.7 21.2 28.7H12V10zm4.7 4.55v9.6h4.35c2.7 0 4.35-1.55 4.35-4.8s-1.65-4.8-4.35-4.8H16.7z" fill="#2B4DFF"/>
+  <text x="52" y="28" font-family="Sora, system-ui, sans-serif" font-size="22" font-weight="700" fill="#fff" letter-spacing="-0.5">DMTA</text>
 </svg>

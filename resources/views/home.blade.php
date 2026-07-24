@@ -121,13 +121,13 @@
                             Visitar site →
                         </a>
                     </div>
-                    <div class="reveal reveal-delay-1 order-1 flex justify-center lg:order-2">
+                    <div class="reveal reveal-delay-1 order-1 lg:order-2">
                         <img
-                            src="{{ asset('images/cases/linksnabio-mobile.jpg') }}"
-                            alt="Print mobile do Links na Bio"
-                            class="w-full max-w-[260px] rounded-xl ring-1 ring-white/10"
-                            width="504"
-                            height="1024"
+                            src="{{ asset('images/cases/linksnabio-desktop.jpg') }}"
+                            alt="Print do Links na Bio — landing e vitrine"
+                            class="w-full rounded-xl ring-1 ring-white/10"
+                            width="1024"
+                            height="480"
                             loading="lazy"
                         >
                     </div>
@@ -192,6 +192,7 @@
 
             <div class="reveal reveal-delay-1 lg:col-span-7">
                 <form
+                    id="contact-form"
                     action="{{ route('contact.store') }}"
                     method="POST"
                     class="relative rounded-2xl bg-surface p-6 ring-1 ring-brand-950/10 sm:p-8"
@@ -204,55 +205,138 @@
                         <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
                     </div>
 
-                    @if ($errors->any())
-                        <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+                    @if (session('success'))
+                        <div
+                            data-form-feedback
+                            data-flash
+                            class="mb-6 rounded-lg border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-800"
+                            role="status"
+                        >
+                            {{ session('success') }}
+                        </div>
+                    @elseif (session('error'))
+                        <div
+                            data-form-feedback
+                            data-flash
+                            class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800"
+                            role="alert"
+                        >
+                            {{ session('error') }}
+                        </div>
+                    @elseif ($errors->any())
+                        <div
+                            data-form-feedback
+                            data-flash
+                            class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+                            role="alert"
+                        >
                             Confira os campos destacados e tente novamente.
                         </div>
+                    @else
+                        <div data-form-feedback class="mb-6 hidden rounded-lg border px-4 py-3 text-sm" role="status"></div>
                     @endif
 
                     <div class="grid gap-5 sm:grid-cols-2">
                         <div class="sm:col-span-2">
                             <label for="name" class="block text-sm font-semibold text-brand-950">Nome</label>
-                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('name') border-red-400 @enderror">
-                            @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                            <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                value="{{ old('name') }}"
+                                required
+                                autocomplete="name"
+                                maxlength="120"
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('name') border-red-400 @enderror"
+                            >
+                            <p data-error-for="name" class="mt-1 text-xs text-red-600 @error('name') @else hidden @enderror">
+                                @error('name') {{ $message }} @enderror
+                            </p>
                         </div>
 
                         <div>
                             <label for="email" class="block text-sm font-semibold text-brand-950">E-mail</label>
-                            <input type="email" name="email" id="email" value="{{ old('email') }}" required
-                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('email') border-red-400 @enderror">
-                            @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                value="{{ old('email') }}"
+                                required
+                                autocomplete="email"
+                                inputmode="email"
+                                maxlength="180"
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('email') border-red-400 @enderror"
+                            >
+                            <p data-error-for="email" class="mt-1 text-xs text-red-600 @error('email') @else hidden @enderror">
+                                @error('email') {{ $message }} @enderror
+                            </p>
                         </div>
 
                         <div>
                             <label for="phone" class="block text-sm font-semibold text-brand-950">WhatsApp</label>
-                            <input type="tel" name="phone" id="phone" value="{{ old('phone') }}"
-                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('phone') border-red-400 @enderror">
-                            @error('phone') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                            <input
+                                type="tel"
+                                name="phone"
+                                id="phone"
+                                value="{{ old('phone') }}"
+                                autocomplete="tel"
+                                inputmode="numeric"
+                                maxlength="15"
+                                placeholder="(19) 99999-9999"
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('phone') border-red-400 @enderror"
+                            >
+                            <p data-error-for="phone" class="mt-1 text-xs text-red-600 @error('phone') @else hidden @enderror">
+                                @error('phone') {{ $message }} @enderror
+                            </p>
                         </div>
 
                         <div class="sm:col-span-2">
                             <label for="project_type" class="block text-sm font-semibold text-brand-950">O que você precisa</label>
-                            <select name="project_type" id="project_type" required
-                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('project_type') border-red-400 @enderror">
-                                <option value="" disabled @selected(old('project_type') === null)>Selecione</option>
+                            <select
+                                name="project_type"
+                                id="project_type"
+                                required
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('project_type') border-red-400 @enderror"
+                            >
+                                <option value="" disabled @selected(old('project_type') === null || old('project_type') === '')>Selecione</option>
                                 @foreach (['Site institucional', 'Sistema sob medida', 'E-commerce', 'Manutenção / suporte', 'Outro'] as $type)
                                     <option value="{{ $type }}" @selected(old('project_type') === $type)>{{ $type }}</option>
                                 @endforeach
                             </select>
-                            @error('project_type') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                            <p data-error-for="project_type" class="mt-1 text-xs text-red-600 @error('project_type') @else hidden @enderror">
+                                @error('project_type') {{ $message }} @enderror
+                            </p>
                         </div>
 
                         <div class="sm:col-span-2">
                             <label for="message" class="block text-sm font-semibold text-brand-950">Mensagem</label>
-                            <textarea name="message" id="message" rows="4" required
-                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('message') border-red-400 @enderror">{{ old('message') }}</textarea>
-                            @error('message') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                            <textarea
+                                name="message"
+                                id="message"
+                                rows="4"
+                                required
+                                maxlength="5000"
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('message') border-red-400 @enderror"
+                            >{{ old('message') }}</textarea>
+                            <p data-error-for="message" class="mt-1 text-xs text-red-600 @error('message') @else hidden @enderror">
+                                @error('message') {{ $message }} @enderror
+                            </p>
                         </div>
                     </div>
 
-                    <button type="submit" class="mt-6 inline-flex w-full items-center justify-center rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-600 sm:w-auto">
+                    @if (config('services.recaptcha.site_key'))
+                        <div class="mt-6">
+                            <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                            <p data-error-for="g-recaptcha-response" class="mt-1 text-xs text-red-600 @error('g-recaptcha-response') @else hidden @enderror">
+                                @error('g-recaptcha-response') {{ $message }} @enderror
+                            </p>
+                        </div>
+                    @endif
+
+                    <button
+                        type="submit"
+                        class="mt-6 inline-flex w-full items-center justify-center rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+                    >
                         Solicitar orçamento
                     </button>
                 </form>

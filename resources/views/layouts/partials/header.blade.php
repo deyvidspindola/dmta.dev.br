@@ -9,8 +9,13 @@
 
 <header class="sticky top-0 z-50 border-b border-brand-950/5 bg-white/85 backdrop-blur-md">
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <a href="#inicio" class="shrink-0 font-display text-lg font-bold tracking-tight text-brand-950" aria-label="DMTA — início">
-            <img src="{{ asset('images/brand/dmta-wordmark.svg') }}" alt="DMTA" class="h-8 w-auto" width="178" height="40">
+        <a href="#inicio" class="inline-flex shrink-0 items-center gap-2.5" aria-label="DMTA — início">
+            {{-- Temporário até escolha do monograma em /logo-preview --}}
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <rect width="40" height="40" rx="10" fill="#2B4DFF"/>
+                <path d="M12 10h9.2c5.55 0 9.1 3.2 9.1 9.35S26.75 28.7 21.2 28.7H12V10zm4.7 4.55v9.6h4.35c2.7 0 4.35-1.55 4.35-4.8s-1.65-4.8-4.35-4.8H16.7z" fill="#fff"/>
+            </svg>
+            <span class="font-display text-lg font-bold tracking-tight text-brand-950">DMTA</span>
         </a>
 
         <nav class="hidden items-center gap-1 md:flex" aria-label="Principal">
