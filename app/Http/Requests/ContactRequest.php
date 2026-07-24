@@ -26,8 +26,7 @@ class ContactRequest extends FormRequest
                 'string',
                 Rule::in([
                     'Site institucional',
-                    'Landing page',
-                    'Sistema personalizado',
+                    'Sistema sob medida',
                     'E-commerce',
                     'Manutenção / suporte',
                     'Outro',

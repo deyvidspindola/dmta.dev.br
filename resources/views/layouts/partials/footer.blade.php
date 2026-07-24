@@ -1,14 +1,14 @@
 <footer class="mt-auto border-t border-brand-950/10 bg-brand-950 text-white">
     <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div class="lg:col-span-5">
-            <img src="{{ asset('images/brand/dmta-wordmark-white.svg') }}" alt="DMTA" class="h-9 w-auto" width="178" height="40">
+            <p class="font-display text-lg font-bold tracking-tight text-white">DMTA</p>
             <p class="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
-                Sites, sistemas e soluções digitais sob medida — com cara profissional e foco em fechar negócio.
+                Sites e sistemas sob medida — com foco em fechar negócio.
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
                 <x-whatsapp-button variant="on-dark" />
                 <a
-                    href="{{ route('contact') }}"
+                    href="#contato"
                     class="inline-flex items-center justify-center rounded-lg bg-white px-4 py-2.5 text-sm font-bold text-brand-950 transition hover:bg-brand-50"
                 >
                     Solicitar orçamento
@@ -19,11 +19,10 @@
         <div class="lg:col-span-3">
             <h3 class="font-display text-sm font-bold uppercase tracking-wider text-white/50">Navegação</h3>
             <ul class="mt-4 space-y-2 text-sm">
-                <li><a class="text-white/80 transition hover:text-white" href="{{ route('home') }}">Início</a></li>
-                <li><a class="text-white/80 transition hover:text-white" href="{{ route('services') }}">Serviços</a></li>
-                <li><a class="text-white/80 transition hover:text-white" href="{{ route('cases') }}">Cases</a></li>
-                <li><a class="text-white/80 transition hover:text-white" href="{{ route('about') }}">Sobre</a></li>
-                <li><a class="text-white/80 transition hover:text-white" href="{{ route('contact') }}">Contato</a></li>
+                <li><a class="text-white/80 transition hover:text-white" href="#servicos">Serviços</a></li>
+                <li><a class="text-white/80 transition hover:text-white" href="#cases">Cases</a></li>
+                <li><a class="text-white/80 transition hover:text-white" href="#processo">Processo</a></li>
+                <li><a class="text-white/80 transition hover:text-white" href="#contato">Contato</a></li>
             </ul>
         </div>
 

@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'DMTA — Sites, sistemas e soluções digitais')
-@section('meta_description', 'Transformamos ideias em soluções digitais que vendem, organizam e escalam o seu negócio. Sites, sistemas e produtos sob medida.')
+@section('title', 'DMTA — Sites e sistemas sob medida')
+@section('meta_description', 'A DMTA cria sites institucionais e sistemas sob medida para negócios reais. Solicite um orçamento ou fale no WhatsApp.')
 
 @section('content')
-    {{-- Hero full-bleed --}}
-    <section class="relative isolate min-h-[calc(100vh-4rem)] overflow-hidden">
+    {{-- Hero --}}
+    <section id="inicio" class="relative isolate min-h-[calc(100vh-4rem)] overflow-hidden scroll-mt-16">
         <img
             src="{{ asset('images/marketing/hero-workspace.jpg') }}"
             alt=""
@@ -18,17 +18,15 @@
         <div class="absolute inset-0 bg-gradient-to-t from-brand-950/70 via-transparent to-brand-950/30" aria-hidden="true"></div>
 
         <div class="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8">
-            <p class="font-display text-sm font-bold uppercase tracking-[0.28em] text-brand-300">
-                DMTA
-            </p>
+            <p class="font-display text-sm font-bold uppercase tracking-[0.28em] text-brand-300">DMTA</p>
             <h1 class="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl lg:text-6xl text-balance">
                 Seu negócio merece um digital que fecha negócio.
             </h1>
             <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/80">
-                Sites, sistemas e produtos sob medida — com cara de empresa séria e CTAs que convertem.
+                Sites e sistemas sob medida — do jeito que seu negócio já funciona, não do jeito que o software genérico obriga.
             </p>
             <div class="mt-10 flex flex-wrap gap-3">
-                <x-cta-button href="{{ route('contact') }}" size="lg" class="shadow-lg shadow-brand-950/40">
+                <x-cta-button href="#contato" size="lg" class="shadow-lg shadow-brand-950/40">
                     Solicitar orçamento
                 </x-cta-button>
                 <x-whatsapp-button size="lg" variant="on-dark" message="Olá! Quero um orçamento com a DMTA." />
@@ -37,33 +35,21 @@
     </section>
 
     {{-- Serviços --}}
-    <section class="bg-white py-24">
+    <section id="servicos" class="scroll-mt-16 bg-white py-20 sm:py-24">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div class="max-w-2xl reveal">
                 <h2 class="text-3xl font-bold sm:text-4xl">O que entregamos</h2>
                 <p class="mt-3 text-lg text-muted">
-                    Do site que gera lead ao sistema que organiza a operação — sempre com foco em resultado.
+                    Quatro frentes claras — entrega concreta, sem pacote genérico.
                 </p>
             </div>
 
-            <div class="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2">
+            <div class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2">
                 @foreach ([
-                    [
-                        'title' => 'Desenvolvimento Web',
-                        'text' => 'Sites institucionais e landing pages rápidas, com identidade forte e caminho claro até o WhatsApp ou formulário.',
-                    ],
-                    [
-                        'title' => 'Sistemas personalizados',
-                        'text' => 'Ferramentas sob medida para vagas, clientes, pedidos e processos — sem forçar planilha ou software genérico.',
-                    ],
-                    [
-                        'title' => 'E-commerce',
-                        'text' => 'Lojas online pensadas para vender no celular: catálogo claro, checkout simples e gestão sem dor.',
-                    ],
-                    [
-                        'title' => 'Manutenção e suporte',
-                        'text' => 'Seu digital no ar, atualizado e evoluindo — com alguém do outro lado quando precisar.',
-                    ],
+                    ['title' => 'Desenvolvimento Web', 'text' => 'Sites e landing pages rápidos, com identidade própria e caminho claro até WhatsApp ou formulário.'],
+                    ['title' => 'Sistemas personalizados', 'text' => 'Painéis e fluxos sob medida para a operação — sem adaptar o negócio a um ERP engessado.'],
+                    ['title' => 'E-commerce', 'text' => 'Loja pensada para vender no celular: catálogo, carrinho, checkout e gestão sem fricção.'],
+                    ['title' => 'Manutenção e suporte', 'text' => 'Correções, atualizações e evoluções depois do go-live — com quem já conhece o código.'],
                 ] as $i => $service)
                     <article @class(['reveal', 'reveal-delay-'.(($i % 2) + 1), 'border-l-4 border-brand-500 pl-6'])>
                         <h3 class="text-xl font-bold">{{ $service['title'] }}</h3>
@@ -71,40 +57,39 @@
                     </article>
                 @endforeach
             </div>
-
-            <div class="mt-12 reveal">
-                <x-cta-button href="{{ route('services') }}" variant="secondary">Ver todos os serviços</x-cta-button>
-            </div>
         </div>
     </section>
 
-    {{-- Cases com imagem --}}
-    <section class="overflow-hidden bg-brand-950 py-24 text-white">
+    {{-- Cases --}}
+    <section id="cases" class="scroll-mt-16 overflow-hidden bg-brand-950 py-20 text-white sm:py-24">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div class="max-w-2xl reveal">
-                <h2 class="text-3xl font-bold text-white sm:text-4xl">Cases reais, no ar</h2>
+                <h2 class="text-3xl font-bold text-white sm:text-4xl">Projetos em produção</h2>
                 <p class="mt-3 text-lg text-white/65">
-                    Produtos que gente de verdade usa — não mockups de portfolio genérico.
+                    Prova real — não mockup de portfolio genérico.
                 </p>
             </div>
 
-            <div class="mt-14 space-y-20">
+            <div class="mt-14 space-y-16">
                 <article class="grid items-center gap-10 lg:grid-cols-2">
-                    <div class="reveal overflow-hidden rounded-2xl ring-1 ring-white/10">
+                    <div class="reveal space-y-4">
                         <img
-                            src="{{ asset('images/marketing/case-emprega.jpg') }}"
-                            alt="Interface de portal de vagas em notebook e celular"
-                            class="aspect-[4/3] w-full object-cover transition duration-700 hover:scale-[1.03]"
-                            width="1200"
-                            height="900"
+                            src="{{ asset('images/cases/emprega-desktop.jpg') }}"
+                            alt="Print do Emprega Paulínia — portal de vagas"
+                            class="w-full rounded-xl ring-1 ring-white/10"
+                            width="1024"
+                            height="482"
                             loading="lazy"
                         >
                     </div>
                     <div class="reveal reveal-delay-1">
-                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-brand-300">Produto próprio</p>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-brand-300">Plataforma web / marketplace de vagas</p>
                         <h3 class="mt-3 text-3xl font-bold text-white">Emprega Paulínia</h3>
                         <p class="mt-4 text-white/70 leading-relaxed">
-                            Portal de empregos local: empresas publicam vagas, candidatos encontram oportunidades e o mercado da região ganha um canal próprio — fora do feed bagunçado.
+                            <span class="font-semibold text-white">Problema:</span> conectar candidatos e empresas da região sem a fricção de portais genéricos.
+                        </p>
+                        <p class="mt-3 text-white/70 leading-relaxed">
+                            <span class="font-semibold text-white">O que foi construído:</span> portal com vagas, busca, cadastro e conteúdo de carreira — em uso em Paulínia e região.
                         </p>
                         <a
                             href="https://empregapaulinia.com.br"
@@ -112,18 +97,20 @@
                             rel="noopener noreferrer"
                             class="mt-8 inline-flex items-center gap-2 text-sm font-bold text-white underline decoration-brand-400 underline-offset-4 hover:decoration-white"
                         >
-                            Ver empregapaulinia.com.br
-                            <span aria-hidden="true">→</span>
+                            Visitar site →
                         </a>
                     </div>
                 </article>
 
                 <article class="grid items-center gap-10 lg:grid-cols-2">
                     <div class="reveal order-2 lg:order-1">
-                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-brand-300">Produto próprio</p>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-brand-300">Produto SaaS / multi-cliente</p>
                         <h3 class="mt-3 text-3xl font-bold text-white">Links na Bio</h3>
                         <p class="mt-4 text-white/70 leading-relaxed">
-                            Página de links para salões, clínicas e negócios locais levarem o visitante direto ao WhatsApp, cardápio ou atendimento — sem perder o lead no caminho.
+                            <span class="font-semibold text-white">Problema:</span> negócios locais perdiam leads no Instagram com bios confusas e apps de terceiro.
+                        </p>
+                        <p class="mt-3 text-white/70 leading-relaxed">
+                            <span class="font-semibold text-white">O que foi construído:</span> plataforma multi-tenant com editor visual, domínio próprio e atualização remota.
                         </p>
                         <a
                             href="https://linksnabio.app.br"
@@ -131,47 +118,43 @@
                             rel="noopener noreferrer"
                             class="mt-8 inline-flex items-center gap-2 text-sm font-bold text-white underline decoration-brand-400 underline-offset-4 hover:decoration-white"
                         >
-                            Ver linksnabio.app.br
-                            <span aria-hidden="true">→</span>
+                            Visitar site →
                         </a>
                     </div>
-                    <div class="reveal reveal-delay-1 order-1 mx-auto w-full max-w-sm overflow-hidden rounded-2xl ring-1 ring-white/10 lg:order-2 lg:mx-0 lg:max-w-none">
+                    <div class="reveal reveal-delay-1 order-1 flex justify-center lg:order-2">
                         <img
-                            src="{{ asset('images/marketing/case-links.jpg') }}"
-                            alt="Celular com página de links na bio"
-                            class="aspect-[3/4] w-full object-cover transition duration-700 hover:scale-[1.03] lg:aspect-[4/3]"
-                            width="900"
-                            height="1200"
+                            src="{{ asset('images/cases/linksnabio-mobile.jpg') }}"
+                            alt="Print mobile do Links na Bio"
+                            class="w-full max-w-[260px] rounded-xl ring-1 ring-white/10"
+                            width="504"
+                            height="1024"
                             loading="lazy"
                         >
                     </div>
                 </article>
             </div>
-
-            <div class="mt-14 reveal">
-                <x-cta-button href="{{ route('cases') }}" variant="on-dark">Ver todos os cases</x-cta-button>
-            </div>
         </div>
     </section>
 
-    {{-- Processo --}}
-    <section class="bg-mesh py-24">
+    {{-- Processo + diferencial curto --}}
+    <section id="processo" class="scroll-mt-16 bg-mesh py-20 sm:py-24">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div class="max-w-2xl reveal">
                 <h2 class="text-3xl font-bold sm:text-4xl">Como trabalhamos</h2>
-                <p class="mt-3 text-lg text-muted">Processo claro, do briefing ao suporte — sem surpresa no meio do caminho.</p>
+                <p class="mt-3 text-lg text-muted">
+                    Sistema sob medida (você não se adapta à ferramenta), fala direta com quem desenvolve e suporte depois do go-live.
+                </p>
             </div>
 
-            <ol class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <ol class="mt-12 grid gap-6 sm:grid-cols-3">
                 @foreach ([
-                    ['n' => '01', 't' => 'Descoberta', 'd' => 'Entendemos o negócio, o público e o que precisa converter.'],
-                    ['n' => '02', 't' => 'Construção', 'd' => 'Design e código com foco em clareza, velocidade e uso real.'],
-                    ['n' => '03', 't' => 'Entrega', 'd' => 'Publicação, ajustes finais e você no comando do resultado.'],
-                    ['n' => '04', 't' => 'Suporte', 'd' => 'Evolução contínua quando o projeto precisa crescer.'],
+                    ['n' => '01', 't' => 'Planejamento', 'd' => 'Levantamos o processo real, o objetivo comercial e o que entra na primeira entrega.'],
+                    ['n' => '02', 't' => 'Desenvolvimento', 'd' => 'Design e código em ciclos curtos, com prévias para você validar no caminho.'],
+                    ['n' => '03', 't' => 'Entrega e suporte', 'd' => 'Publicação, ajustes finos e evolução contínua conforme o uso real.'],
                 ] as $i => $step)
-                    <li @class(['reveal', 'reveal-delay-'.min($i + 1, 3), 'rounded-2xl bg-white/80 p-6 ring-1 ring-brand-950/10 backdrop-blur-sm'])>
+                    <li @class(['reveal', 'reveal-delay-'.min($i + 1, 3)])>
                         <p class="font-display text-3xl font-extrabold text-brand-500/30">{{ $step['n'] }}</p>
-                        <h3 class="mt-3 text-lg font-bold">{{ $step['t'] }}</h3>
+                        <h3 class="mt-2 text-lg font-bold">{{ $step['t'] }}</h3>
                         <p class="mt-2 text-sm leading-relaxed text-muted">{{ $step['d'] }}</p>
                     </li>
                 @endforeach
@@ -179,28 +162,100 @@
         </div>
     </section>
 
-    {{-- CTA final com atmosfera --}}
-    <section class="relative isolate overflow-hidden py-28">
-        <img
-            src="{{ asset('images/marketing/hero-workspace.jpg') }}"
-            alt=""
-            class="absolute inset-0 h-full w-full object-cover object-center"
-            loading="lazy"
-        >
-        <div class="absolute inset-0 bg-brand-950/88" aria-hidden="true"></div>
-        <div class="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-            <div class="reveal">
-                <p class="font-display text-sm font-bold uppercase tracking-[0.24em] text-brand-300">DMTA</p>
-                <h2 class="mt-4 text-3xl font-bold text-white sm:text-4xl text-balance">
-                    Pronto para um site que transmite confiança — e pede o próximo passo?
-                </h2>
-                <p class="mx-auto mt-4 max-w-xl text-white/70">
-                    Conte o que você precisa. Montamos uma proposta objetiva e começamos pelo que gera resultado.
+    {{-- Contato --}}
+    <section id="contato" class="scroll-mt-16 border-t border-brand-950/5 bg-white py-20 sm:py-24">
+        <div class="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+            <div class="reveal lg:col-span-5">
+                <h2 class="text-3xl font-bold sm:text-4xl">Solicite um orçamento</h2>
+                <p class="mt-4 text-muted leading-relaxed">
+                    Conte o que você precisa. Respondemos com o próximo passo — objetivo, sem enrolação.
                 </p>
-                <div class="mt-10 flex flex-wrap justify-center gap-3">
-                    <x-cta-button href="{{ route('contact') }}" size="lg">Solicitar orçamento</x-cta-button>
-                    <x-whatsapp-button size="lg" variant="solid" message="Olá! Quero falar com a DMTA sobre um projeto." />
-                </div>
+                <ul class="mt-8 space-y-4 text-sm">
+                    <li>
+                        <p class="font-semibold text-brand-950">WhatsApp</p>
+                        <x-whatsapp-button class="mt-2" message="Olá! Vim pelo site da DMTA e quero um orçamento." />
+                    </li>
+                    <li>
+                        <p class="font-semibold text-brand-950">E-mail</p>
+                        <a class="mt-1 inline-block text-brand-600 hover:underline" href="mailto:{{ config('dmta.contact_email') }}">
+                            {{ config('dmta.contact_email') }}
+                        </a>
+                    </li>
+                    <li>
+                        <p class="font-semibold text-brand-950">Telefone</p>
+                        <a class="mt-1 inline-block text-brand-600 hover:underline" href="tel:{{ config('dmta.phone_tel') }}">
+                            {{ config('dmta.phone_display') }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="reveal reveal-delay-1 lg:col-span-7">
+                <form
+                    action="{{ route('contact.store') }}"
+                    method="POST"
+                    class="relative rounded-2xl bg-surface p-6 ring-1 ring-brand-950/10 sm:p-8"
+                    novalidate
+                >
+                    @csrf
+
+                    <div class="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
+                        <label for="website">Website</label>
+                        <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    @if ($errors->any())
+                        <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+                            Confira os campos destacados e tente novamente.
+                        </div>
+                    @endif
+
+                    <div class="grid gap-5 sm:grid-cols-2">
+                        <div class="sm:col-span-2">
+                            <label for="name" class="block text-sm font-semibold text-brand-950">Nome</label>
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('name') border-red-400 @enderror">
+                            @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-brand-950">E-mail</label>
+                            <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('email') border-red-400 @enderror">
+                            @error('email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold text-brand-950">WhatsApp</label>
+                            <input type="tel" name="phone" id="phone" value="{{ old('phone') }}"
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('phone') border-red-400 @enderror">
+                            @error('phone') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="project_type" class="block text-sm font-semibold text-brand-950">O que você precisa</label>
+                            <select name="project_type" id="project_type" required
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('project_type') border-red-400 @enderror">
+                                <option value="" disabled @selected(old('project_type') === null)>Selecione</option>
+                                @foreach (['Site institucional', 'Sistema sob medida', 'E-commerce', 'Manutenção / suporte', 'Outro'] as $type)
+                                    <option value="{{ $type }}" @selected(old('project_type') === $type)>{{ $type }}</option>
+                                @endforeach
+                            </select>
+                            @error('project_type') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="message" class="block text-sm font-semibold text-brand-950">Mensagem</label>
+                            <textarea name="message" id="message" rows="4" required
+                                class="mt-1.5 w-full rounded-lg border border-brand-950/10 bg-white px-3 py-2.5 text-sm outline-none ring-brand-500 focus:ring-2 @error('message') border-red-400 @enderror">{{ old('message') }}</textarea>
+                            @error('message') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+
+                    <button type="submit" class="mt-6 inline-flex w-full items-center justify-center rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-brand-600 sm:w-auto">
+                        Solicitar orçamento
+                    </button>
+                </form>
             </div>
         </div>
     </section>

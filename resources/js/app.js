@@ -4,12 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('nav-toggle');
     const mobileNav = document.getElementById('mobile-nav');
 
+    const setMenuOpen = (open) => {
+        if (!toggle || !mobileNav) return;
+        mobileNav.classList.toggle('hidden', !open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    };
+
     if (toggle && mobileNav) {
         toggle.addEventListener('click', () => {
-            const isOpen = !mobileNav.classList.contains('hidden');
-            mobileNav.classList.toggle('hidden', isOpen);
-            toggle.setAttribute('aria-expanded', String(!isOpen));
-            toggle.setAttribute('aria-label', isOpen ? 'Abrir menu' : 'Fechar menu');
+            setMenuOpen(mobileNav.classList.contains('hidden'));
+        });
+
+        mobileNav.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => setMenuOpen(false));
         });
     }
 
