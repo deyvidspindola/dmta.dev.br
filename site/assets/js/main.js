@@ -13,15 +13,15 @@
     yearEl.textContent = String(new Date().getFullYear());
   }
 
-  /* Header mais opaco no scroll */
+  /* Header sticky — fundo paper mais sólido no scroll */
   function onScroll() {
     if (!header) return;
     if (window.scrollY > 12) {
-      header.classList.add('bg-graphite/95');
-      header.classList.remove('bg-graphite/80');
+      header.classList.add('bg-paper');
+      header.classList.remove('bg-paper/90');
     } else {
-      header.classList.add('bg-graphite/80');
-      header.classList.remove('bg-graphite/95');
+      header.classList.add('bg-paper/90');
+      header.classList.remove('bg-paper');
     }
   }
 

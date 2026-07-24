@@ -4,12 +4,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        graphite: '#12151C',
-        'graphite-card': '#1B1F29',
-        mist: '#8B93A6',
-        bone: '#F3F4F7',
-        signal: '#FF9A3C',
-        circuit: '#4C7EFF',
+        paper: '#F7F7FA',
+        'paper-card': '#FFFFFF',
+        ink: '#12151C',
+        mist: '#5B6472',
+        signal: '#FF7A2E',
+        circuit: '#2A4CE0',
+        pulse: '#0EA37A',
       },
       fontFamily: {
         display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
