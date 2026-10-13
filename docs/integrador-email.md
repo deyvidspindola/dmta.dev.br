@@ -12,7 +12,7 @@ DMTA_MAILER_TOKEN=COLE_O_TOKEN_DO_PROJETO_AQUI
 DMTA_MAILER_DOMAIN=dmta.com.br
 ```
 
-Preencha o token diretamente no ambiente. `CONTACT_EMAIL` continua sendo o destinatário; o integrador define o remetente. Não são necessárias credenciais do provedor no site.
+Preencha o token diretamente no ambiente. `CONTACT_RECIPIENT_EMAIL` define o destinatário (padrão: `deyvidrafhael@gmail.com`); `CONTACT_EMAIL` é o contato público exibido no site; o integrador define o remetente. Não são necessárias credenciais do provedor no site.
 
 Depois de configurar o token e disponibilizar o banco:
 
@@ -62,3 +62,5 @@ Não altere APP_KEY de uma instalação existente: o conteúdo já persistido es
 Os logs de falha agora registram `failure`, `http_status`, `exception_class` e `reference`, sem mensagem bruta de exceção ou credenciais. Uma falha `internal_error` com `Illuminate\Database\QueryException` indica que é preciso examinar banco/migration no servidor; `unauthorized` corresponde a 401 do core; `validation_error` a 422; `unavailable` a 503; `unknown` exige conferência antes de reenviar.
 
 A validação da configuração ocorre antes da persistência. Intenções antigas marcadas como `configuration_error` podem ser retomadas após corrigir a configuração, preservando chave e payload. Isso não libera reenvios de failed, unknown ou sending. A URL do integrador pode ser a base ou o endpoint completo, sem duplicar `/api/v1/emails`.
+
+O destinatário foi alterado para `deyvidrafhael@gmail.com`. Após o deploy, execute `php artisan config:cache`. A configuração antiga CONTACT_EMAIL não sobrescreve o destinatário do formulário. Não reenvie intenções antigas com o payload alterado: elas preservam o destinatário original; use uma nova submissão após a atualização.

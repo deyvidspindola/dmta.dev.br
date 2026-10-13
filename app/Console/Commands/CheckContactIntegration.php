@@ -28,9 +28,9 @@ class CheckContactIntegration extends Command
             $failed = true;
             $this->error('Configuração inválida: confira DMTA_MAILER_URL e DMTA_MAILER_TOKEN; placeholder não é token válido.');
         }
-        if (! filter_var(config('dmta.contact_email'), FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var(config('dmta.contact_recipient_email'), FILTER_VALIDATE_EMAIL)) {
             $failed = true;
-            $this->error('Destinatário inválido: confira CONTACT_EMAIL.');
+            $this->error('Destinatário inválido: confira CONTACT_RECIPIENT_EMAIL.');
         }
         if (! config('app.key')) {
             $failed = true;

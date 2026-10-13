@@ -19,7 +19,7 @@ final class SendContactEmail
     public function execute(string $intent, array $lead): void
     {
         $this->emails->ensureConfigured();
-        $recipient = config('dmta.contact_email');
+        $recipient = config('dmta.contact_recipient_email');
         $fingerprint = hash('sha256', json_encode([$recipient, $lead], JSON_THROW_ON_ERROR));
         $payload = [
             'to' => [['email' => $recipient, 'name' => 'DMTA']],

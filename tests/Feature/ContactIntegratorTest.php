@@ -23,7 +23,8 @@ class ContactIntegratorTest extends TestCase
             'services.dmta_mailer.token' => 'test-token',
             'services.dmta_mailer.domain' => 'dmta.dev.br', // Mesmo uma configuração incorreta não muda o domínio enviado.
             'services.recaptcha.secret_key' => null,
-            'dmta.contact_email' => 'contato@dmta.com.br',
+            'dmta.contact_email' => 'contato@dmta.dev.br',
+            'dmta.contact_recipient_email' => 'deyvidrafhael@gmail.com',
         ]);
     }
 
@@ -53,7 +54,7 @@ class ContactIntegratorTest extends TestCase
             $this->assertTrue($request->hasHeader('Idempotency-Key', 'contact-'.$lead['send_intent']));
             $this->assertTrue($request->hasHeader('Content-Type', 'application/json'));
             $this->assertTrue($request->hasHeader('Accept', 'application/json'));
-            $this->assertSame([['email' => 'contato@dmta.com.br', 'name' => 'DMTA']], $request['to']);
+            $this->assertSame([['email' => 'deyvidrafhael@gmail.com', 'name' => 'DMTA']], $request['to']);
             $this->assertSame(['email' => $lead['email'], 'name' => $lead['name']], $request['reply_to']);
             $this->assertStringContainsString('José Teste', base64_decode($request['html_base64'], true));
             $this->assertStringContainsString($lead['message'], base64_decode($request['text_base64'], true));
