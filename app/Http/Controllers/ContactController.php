@@ -47,6 +47,6 @@ class ContactController extends Controller
     private function confirmation(): RedirectResponse
     {
         return redirect('/#contato')
-            ->with('success', 'Mensagem aceita para envio. Em breve entraremos em contato.');
+            ->with('success', 'Recebemos sua mensagem! Entraremos em contato em breve.');
     }
 }
