@@ -20,7 +20,7 @@ final class ContactDeliveryRepository
     /** Apenas uma requisição pode iniciar a chamada de uma intenção. */
     public function claim(ContactDelivery $delivery): bool
     {
-        return ContactDelivery::whereKey($delivery->id)->where('status', 'pending')
+        return ContactDelivery::whereKey($delivery->id)->whereIn('status', ['pending', 'configuration_error'])
             ->update(['status' => 'sending']) === 1;
     }
 

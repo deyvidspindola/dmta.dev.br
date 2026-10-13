@@ -129,6 +129,71 @@ class ContactIntegratorTest extends TestCase
         config(['services.dmta_mailer.token' => null]);
         $this->post('/contato', $this->contact())->assertSessionHas('error');
         Http::assertNothingSent();
-        $this->assertDatabaseHas('contact_deliveries', ['status' => 'configuration_error']);
+        $this->assertDatabaseCount('contact_deliveries', 0);
+    }
+
+    public function test_missing_configuration_recovers_after_token_is_fixed(): void
+    {
+        $lead = $this->contact();
+        config(['services.dmta_mailer.token' => 'COLE_O_TOKEN_DO_PROJETO_AQUI']);
+        $this->post('/contato', $lead)->assertSessionHas('error');
+        Http::assertNothingSent();
+        config(['services.dmta_mailer.token' => 'test-token']);
+        Http::fake(['*' => Http::response(['data' => ['id' => 'fixed', 'status' => 'accepted']], 202)]);
+        $this->post('/contato', $lead)->assertSessionHas('success');
+        Http::assertSentCount(1);
+    }
+
+    public function test_existing_configuration_error_can_recover_with_same_key_and_payload(): void
+    {
+        $lead = $this->contact();
+        Http::fake(['*' => Http::response(['data' => ['id' => 'original', 'status' => 'accepted']], 202)]);
+        $this->post('/contato', $lead)->assertSessionHas('success');
+        $delivery = ContactDelivery::first();
+        $originalPayload = $delivery->payload;
+        $delivery->update(['status' => 'configuration_error', 'remote_id' => null, 'provider_id' => null, 'http_status' => null]);
+        Http::fake(function ($request) use ($lead, $originalPayload) {
+            $this->assertTrue($request->hasHeader('Idempotency-Key', 'contact-'.$lead['send_intent']));
+            $this->assertSame($originalPayload, $request->data());
+
+            return Http::response(['data' => ['id' => 'fixed', 'status' => 'accepted']], 202);
+        });
+        $this->post('/contato', $lead)->assertSessionHas('success');
+        Http::assertSentCount(1);
+    }
+
+    public function test_complete_endpoint_is_not_appended_twice(): void
+    {
+        config(['services.dmta_mailer.url' => 'https://mailler.dmta.com.br/api/v1/emails/']);
+        Http::fake(['https://mailler.dmta.com.br/api/v1/emails' => Http::response(['data' => ['id' => 'direct', 'status' => 'accepted']], 202)]);
+        $this->post('/contato', $this->contact())->assertSessionHas('success');
+        Http::assertSentCount(1);
+    }
+
+    public function test_diagnostic_checks_core_without_sending_mail(): void
+    {
+        Http::fake(function ($request) {
+            $this->assertSame('GET', $request->method());
+            $this->assertTrue($request->hasHeader('X-Project-Domain', 'dmta.com.br'));
+            $this->assertTrue($request->hasHeader('Authorization', 'Bearer test-token'));
+
+            return Http::response(['data' => []], 200);
+        });
+        $this->artisan('contact:check', ['--core' => true])->assertSuccessful();
+        Http::assertSentCount(1);
+    }
+
+    public function test_diagnostic_rejects_placeholder_without_http(): void
+    {
+        config(['services.dmta_mailer.token' => 'COLE_O_TOKEN_DO_PROJETO_AQUI']);
+        $this->artisan('contact:check', ['--core' => true])->assertFailed();
+        Http::assertNothingSent();
+    }
+
+    public function test_diagnostic_rejects_unauthorized_core(): void
+    {
+        Http::fake(['*' => Http::response(['message' => 'Unauthorized'], 401)]);
+        $this->artisan('contact:check', ['--core' => true])->assertFailed();
+        Http::assertSentCount(1);
     }
 }

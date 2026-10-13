@@ -12,17 +12,33 @@ final class EmailService
 {
     public const PROJECT_DOMAIN = 'dmta.com.br';
 
+    /** Valida acesso antes de gravar uma intenção ou iniciar uma requisição. */
+    public function ensureConfigured(): void
+    {
+        $url = config('services.dmta_mailer.url');
+        $token = config('services.dmta_mailer.token');
+        if (! is_string($url) || ! filter_var($url, FILTER_VALIDATE_URL) || parse_url($url, PHP_URL_SCHEME) !== 'https'
+            || ! is_string($token) || trim($token) === '' || trim($token) === 'COLE_O_TOKEN_DO_PROJETO_AQUI') {
+            throw new EmailDeliveryException('configuration_error');
+        }
+    }
+
+    /** Aceita a URL base ou o endpoint completo, evitando duplicar /api/v1/emails. */
+    public function endpoint(): string
+    {
+        $this->ensureConfigured();
+        $url = rtrim(config('services.dmta_mailer.url'), '/');
+
+        return str_ends_with($url, '/api/v1/emails') ? $url : $url.'/api/v1/emails';
+    }
+
     /** @param array<string, mixed> $payload
      * @return array<string, mixed>
      */
     public function send(array $payload, string $idempotencyKey): array
     {
-        $url = config('services.dmta_mailer.url');
-        $token = config('services.dmta_mailer.token');
-
-        if (! $url || ! $token || $token === 'COLE_O_TOKEN_DO_PROJETO_AQUI' || parse_url($url, PHP_URL_SCHEME) !== 'https') {
-            throw new EmailDeliveryException('configuration_error');
-        }
+        $endpoint = $this->endpoint();
+        $token = trim(config('services.dmta_mailer.token'));
 
         try {
             $response = Http::withToken($token)
@@ -34,7 +50,7 @@ final class EmailService
                     'X-Project-Domain' => self::PROJECT_DOMAIN,
                     'Idempotency-Key' => $idempotencyKey,
                 ])
-                ->post(rtrim($url, '/').'/api/v1/emails', $payload);
+                ->post($endpoint, $payload);
         } catch (ConnectionException|RequestException $e) {
             throw new EmailDeliveryException('unknown');
         }

@@ -31,6 +31,9 @@ class ContactController extends Controller
         } catch (\Throwable $e) {
             Log::error('Falha ao entregar o contato do site', [
                 'failure' => $e instanceof EmailDeliveryException ? $e->deliveryStatus : 'internal_error',
+                'http_status' => $e instanceof EmailDeliveryException ? $e->httpStatus : null,
+                'exception_class' => get_class($e),
+                'reference' => $data['send_intent'],
             ]);
 
             return redirect('/#contato')
