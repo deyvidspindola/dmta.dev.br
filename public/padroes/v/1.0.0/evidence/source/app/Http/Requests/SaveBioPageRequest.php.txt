@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Http\Requests;
+
+use App\Services\BioConfigParser;
+use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * JSON da página interna enviado pelo editor.
+ */
+class SaveBioPageRequest extends FormRequest
+{
+    /**
+     * @return array<string, mixed>
+     */
+    public function rules(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function config(BioConfigParser $parser): array
+    {
+        return $parser->parsePage($this->input('config', $this->all()));
+    }
+}

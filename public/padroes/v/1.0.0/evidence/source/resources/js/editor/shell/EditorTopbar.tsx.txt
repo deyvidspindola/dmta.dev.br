@@ -1,0 +1,196 @@
+import { EditorDestinationSelect } from '../context/EditorDestinationContext'
+import { templateEditorId } from '../lib/templateContext'
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  Globe,
+  LogOut,
+  Moon,
+  Redo2,
+  Save,
+  Sun,
+  Undo2,
+} from 'lucide-react'
+import { BrandWordmark } from '../../shared/brand/BrandWordmark'
+import { DEMO_WHATSAPP_URL } from '../lib/demo'
+
+export interface EditorTopbarProps {
+  formEditing?: boolean
+  pageTitle?: string
+  actionsDisabled?: boolean
+  isDemo: boolean
+  isDark: boolean
+  isDirty: boolean
+  saving: boolean
+  publishing: boolean
+  canUndo: boolean
+  canRedo: boolean
+  impersonating?: boolean
+  /** Nome do cliente quando o admin edita a bio dele. */
+  editingClientName?: string
+  onUndo: () => void
+  onRedo: () => void
+  onToggleTheme: () => void
+  onSave: () => void
+  onOpenPublishConfirm: () => void
+  onLogout: () => void
+  onStopImpersonating?: () => void
+}
+
+export function EditorTopbar({
+  formEditing = false,
+  pageTitle,
+  actionsDisabled = false,
+  isDemo,
+  isDark,
+  isDirty,
+  saving,
+  publishing,
+  canUndo,
+  canRedo,
+  impersonating = false,
+  editingClientName,
+  onUndo,
+  onRedo,
+  onToggleTheme,
+  onSave,
+  onOpenPublishConfirm,
+  onLogout,
+  onStopImpersonating,
+}: EditorTopbarProps) {
+  return (
+    <header className="editor-topbar hidden md:flex fixed inset-x-0 top-0 z-40 h-14 items-center gap-x-2 px-3 sm:gap-x-3 sm:px-4">
+      <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <div className="editor-topbar-brand hidden leading-tight sm:block">
+          <BrandWordmark withIcon />
+          <h1 className="editor-topbar-brand__caption text-xs text-muted-foreground" title={pageTitle ?? editingClientName}>
+            {pageTitle ? `Editando: ${pageTitle}` : isDemo
+              ? 'Demonstração do editor'
+              : impersonating
+                ? `Editor - ${(editingClientName?.trim() || 'Cliente')}`
+                : 'Editor da sua página'}
+          </h1>
+        </div>
+      </div>
+
+      <div className="editor-topbar-admin">        {impersonating && onStopImpersonating && (
+          <button
+            type="button"
+            className="topbar-publish"
+            onClick={onStopImpersonating}
+            title="Voltar ao painel admin"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">Voltar ao admin</span>
+          </button>
+        )}</div>
+      <EditorDestinationSelect />
+      <div className="ml-auto flex min-w-0 items-center gap-1 sm:gap-1.5">
+        {!isDemo && (publishing || saving || isDirty) && (
+          <span
+            role="status"
+            className="topbar-save-status hidden shrink min-w-0 truncate text-xs text-muted-foreground lg:inline"
+            title={publishing ? 'Publicando…' : saving ? 'Salvando…' : 'Alterações pendentes'}
+          >
+            {publishing ? 'Publicando…' : saving ? 'Salvando…' : 'Alterações pendentes'}
+          </span>
+        )}
+
+        <>
+        <button
+          type="button"
+          className="topbar-btn"
+          onClick={onUndo}
+          disabled={!canUndo}
+          title="Desfazer"
+          aria-label="Desfazer"
+        >
+          <Undo2 className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          className="topbar-btn"
+          onClick={onRedo}
+          disabled={!canRedo}
+          title="Refazer"
+          aria-label="Refazer"
+        >
+          <Redo2 className="h-4 w-4" />
+        </button>
+        </>
+
+        <button
+          type="button"
+          className="topbar-btn hidden sm:inline-flex"
+          onClick={onToggleTheme}
+          title={isDark ? 'Modo claro' : 'Modo escuro'}
+          aria-label={isDark ? 'Ativar modo claro' : 'Ativar modo escuro'}
+        >
+          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        </button>
+
+        {!isDemo && (
+          <>
+            <>
+            <span className="mx-0.5 hidden h-5 w-px bg-border sm:block" aria-hidden="true" />
+
+            <button
+              type="button"
+              className={`topbar-draft ${isDirty ? 'topbar-draft--dirty' : ''}`}
+              onClick={onSave}
+              aria-label={formEditing ? 'Salvar formulário' : 'Salvar'}
+              disabled={actionsDisabled || saving || publishing}
+              title={
+                isDirty
+                  ? 'Há alterações não salvas — salvar rascunho (não publica a bio)'
+                  : 'Salvar rascunho (não publica a bio)'
+              }
+            >
+              <Save className="h-4 w-4" />
+              <span className="hidden sm:inline">
+                {saving ? 'Salvando…' : isDirty ? 'Salvar*' : 'Salvar'}
+              </span>
+              {isDirty && !saving && (
+                <span className="dirty-dot sm:hidden" aria-hidden="true" />
+              )}
+            </button>
+
+            {<button
+              type="button"
+              className="topbar-publish"
+              onClick={onOpenPublishConfirm}
+              disabled={actionsDisabled || saving || publishing}
+              title={templateEditorId ? "Publicar modelo na galeria dos clientes" : "Salvar rascunho e publicar na bio ao vivo"}
+            >
+              <Globe className="h-4 w-4" />
+              <span className="hidden sm:inline">{publishing ? 'Publicando…' : 'Publicar'}</span>
+            </button>}
+            </>
+
+            <button
+              type="button"
+              className="topbar-btn"
+              onClick={onLogout}
+              title="Sair"
+              aria-label="Sair"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
+          </>
+        )}
+
+        {isDemo && (
+          <a
+            href={DEMO_WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="topbar-publish hidden sm:inline-flex"
+          >
+            <span>Quero minha bio</span>
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        )}
+      </div>
+    </header>
+  )
+}

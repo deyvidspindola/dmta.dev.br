@@ -1,0 +1,28 @@
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { ALL_INPUTS, resolveInputs } from '../../vite.entries.mjs'
+
+test('resolveInputs: default e all retornam catálogo completo', () => {
+  assert.deepEqual(resolveInputs({}), [...ALL_INPUTS])
+  assert.deepEqual(resolveInputs({ VITE_APP: 'all' }), [...ALL_INPUTS])
+})
+
+test('resolveInputs: forceAll ignora VITE_APP', () => {
+  assert.deepEqual(
+    resolveInputs({ VITE_APP: 'bio' }, { forceAll: true }),
+    [...ALL_INPUTS],
+  )
+})
+
+test('resolveInputs: agrupa apps e preserva ordem do catálogo', () => {
+  assert.deepEqual(resolveInputs({ VITE_APP: 'bio,editor' }), [
+    'resources/js/editor/main.tsx',
+    'resources/js/editor/preview/main.tsx',
+    'resources/js/bio/main.tsx',
+    'resources/js/bio/embed.tsx',
+  ])
+})
+
+test('resolveInputs: falha rápido em token inválido', () => {
+  assert.throws(() => resolveInputs({ VITE_APP: 'nope' }), /VITE_APP inválido/)
+})

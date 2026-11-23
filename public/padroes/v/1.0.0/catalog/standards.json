@@ -1,0 +1,507 @@
+{
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "FE-001",
+      "status": "observed",
+      "area": "frontend",
+      "title": "Entradas React separadas",
+      "convention": "Organizar por site, app, editor, bio e admin. UI genérica fica em shared/ui; edição em editor/features e editor/canvas. Não pressupor Inertia ou SPA com roteador único.",
+      "evidence": [
+        {
+          "path": "resources/js/README.md",
+          "line": 5,
+          "snapshot": "evidence/source/resources/js/README.md"
+        },
+        {
+          "path": "vite.entries.mjs",
+          "line": 8,
+          "snapshot": "evidence/source/vite.entries.mjs"
+        }
+      ]
+    },
+    {
+      "id": "FE-002",
+      "status": "observed",
+      "area": "frontend",
+      "title": "Componentes e hooks",
+      "convention": "Componentes funcionais nomeados em TSX, props tipadas e callbacks. AccountForm recebe estado e submissão de useAccount. Separar fluxo do componente conforme o domínio observado.",
+      "evidence": [
+        {
+          "path": "resources/js/app/components/AccountForm.tsx",
+          "line": 2,
+          "snapshot": "evidence/source/resources/js/app/components/AccountForm.tsx"
+        },
+        {
+          "path": "resources/js/editor/shell/EditorTopbar.tsx",
+          "line": 17,
+          "snapshot": "evidence/source/resources/js/editor/shell/EditorTopbar.tsx"
+        }
+      ]
+    },
+    {
+      "id": "FE-003",
+      "status": "observed",
+      "area": "header",
+      "title": "Header do editor",
+      "convention": "EditorTopbar é fixo no topo, h-14 e hidden md:flex. Usa BrandWordmark, destino, undo/redo, tema, salvar e publicar. Distingue dirty, saving e publishing; desabilita ações concorrentes. Não confundir salvar rascunho com publicar.",
+      "evidence": [
+        {
+          "path": "resources/js/editor/shell/EditorTopbar.tsx",
+          "line": 62,
+          "snapshot": "evidence/source/resources/js/editor/shell/EditorTopbar.tsx"
+        },
+        {
+          "path": "resources/js/editor/shell/EditorTopbar.tsx",
+          "line": 142,
+          "snapshot": "evidence/source/resources/js/editor/shell/EditorTopbar.tsx"
+        }
+      ]
+    },
+    {
+      "id": "FE-004",
+      "status": "observed",
+      "area": "sidebar",
+      "title": "Navegação do editor",
+      "convention": "EditorRail recebe estado por props. Em largura até 767px, monta dock com dashboard, canvas, adicionar, visual e mais; seleção ativa troca por ações contextuais. Desktop usa rail com opção expandida e aria-current.",
+      "evidence": [
+        {
+          "path": "resources/js/editor/shell/EditorRail.tsx",
+          "line": 249,
+          "snapshot": "evidence/source/resources/js/editor/shell/EditorRail.tsx"
+        },
+        {
+          "path": "resources/js/editor/hooks/useIsNarrow.ts",
+          "line": 3,
+          "snapshot": "evidence/source/resources/js/editor/hooks/useIsNarrow.ts"
+        },
+        {
+          "path": "resources/js/editor/shell/EditorRail.tsx",
+          "line": 227,
+          "snapshot": "evidence/source/resources/js/editor/shell/EditorRail.tsx"
+        }
+      ]
+    },
+    {
+      "id": "FE-005",
+      "status": "observed",
+      "area": "header",
+      "title": "Header administrativo",
+      "convention": "AdminTopbar usa admin-header, marca, acesso ao editor, tema, novo cliente e formulário POST logout com CSRF. CSS posterior define altura 64px, 56px desde 768px; não adotar o antigo 72px como valor final.",
+      "evidence": [
+        {
+          "path": "resources/js/admin/components/AdminTopbar.tsx",
+          "line": 10,
+          "snapshot": "evidence/source/resources/js/admin/components/AdminTopbar.tsx"
+        },
+        {
+          "path": "resources/js/admin/admin.css",
+          "line": 90,
+          "snapshot": "evidence/source/resources/js/admin/admin.css"
+        },
+        {
+          "path": "resources/js/admin/admin.css",
+          "line": 95,
+          "snapshot": "evidence/source/resources/js/admin/admin.css"
+        }
+      ]
+    },
+    {
+      "id": "FE-006",
+      "status": "observed",
+      "area": "sidebar",
+      "title": "Sidebar administrativa",
+      "convention": "AdminRail mantém expanded/open localmente, lista tipada de abas, aria-current, aria-expanded e aria-controls. CSS em >=1280px usa 220px expandida e 68px recolhida; 1024–1279 usa menu expansível. Valores anteriores de 224px são sobrepostos.",
+      "evidence": [
+        {
+          "path": "resources/js/admin/components/AdminRail.tsx",
+          "line": 13,
+          "snapshot": "evidence/source/resources/js/admin/components/AdminRail.tsx"
+        },
+        {
+          "path": "resources/js/admin/admin.css",
+          "line": 109,
+          "snapshot": "evidence/source/resources/js/admin/admin.css"
+        },
+        {
+          "path": "resources/js/admin/admin.css",
+          "line": 110,
+          "snapshot": "evidence/source/resources/js/admin/admin.css"
+        },
+        {
+          "path": "resources/js/admin/admin.css",
+          "line": 100,
+          "snapshot": "evidence/source/resources/js/admin/admin.css"
+        }
+      ]
+    },
+    {
+      "id": "FE-007",
+      "status": "observed",
+      "area": "header",
+      "title": "Header do site",
+      "convention": "Header do site tem navegação própria baseada em NAV, menu mobile controlado por estado e Escape que fecha e devolve foco ao botão. Não importar o shell do editor para marketing.",
+      "evidence": [
+        {
+          "path": "resources/js/site/components/Header.tsx",
+          "line": 11,
+          "snapshot": "evidence/source/resources/js/site/components/Header.tsx"
+        }
+      ]
+    },
+    {
+      "id": "FE-008",
+      "status": "observed",
+      "area": "forms",
+      "title": "Formulários de conta",
+      "convention": "Campos controlados com label/htmlFor/id, required, autocomplete e disabled durante pending. Mensagens de erro usam ErrorText e feedback de sucesso é separado. useAccount concentra submissão.",
+      "evidence": [
+        {
+          "path": "resources/js/app/components/AccountForm.tsx",
+          "line": 63,
+          "snapshot": "evidence/source/resources/js/app/components/AccountForm.tsx"
+        },
+        {
+          "path": "resources/js/app/components/AccountForm.tsx",
+          "line": 91,
+          "snapshot": "evidence/source/resources/js/app/components/AccountForm.tsx"
+        }
+      ]
+    },
+    {
+      "id": "FE-009",
+      "status": "observed",
+      "area": "components",
+      "title": "Primitivos de autenticação",
+      "convention": "shared/ui exporta Button com primary/ghost/outline, Field HTML nativo com label envolvente, AuthCard, PageShell e ErrorText. Field usa defaultValue; não impor que todos os campos sejam controlados.",
+      "evidence": [
+        {
+          "path": "resources/js/shared/ui/index.tsx",
+          "line": 4,
+          "snapshot": "evidence/source/resources/js/shared/ui/index.tsx"
+        },
+        {
+          "path": "resources/js/shared/ui/index.tsx",
+          "line": 47,
+          "snapshot": "evidence/source/resources/js/shared/ui/index.tsx"
+        }
+      ]
+    },
+    {
+      "id": "FE-010",
+      "status": "observed",
+      "area": "forms",
+      "title": "Select e superfícies",
+      "convention": "Select adapta atributos nativos e mantém select oculto para FormData; SelectControl fornece UI visível. surfaceTokens copia sete variáveis da superfície para portais. Não substituir este contrato por um select estilizado sem avaliar o fluxo.",
+      "evidence": [
+        {
+          "path": "resources/js/shared/fields/Select.tsx",
+          "line": 25,
+          "snapshot": "evidence/source/resources/js/shared/fields/Select.tsx"
+        },
+        {
+          "path": "resources/js/shared/fields/surfaceTokens.ts",
+          "line": 7,
+          "snapshot": "evidence/source/resources/js/shared/fields/surfaceTokens.ts"
+        }
+      ]
+    },
+    {
+      "id": "FE-011",
+      "status": "observed",
+      "area": "tokens",
+      "title": "Tokens do editor e admin",
+      "convention": "Usar background, foreground, muted, muted-foreground, card, border, primary e primary-foreground nos respectivos shells. Editor e admin têm paletas equivalentes claro/escuro; há brand-solid e editor-input próprios. Não universalizar paleta para bios personalizadas.",
+      "evidence": [
+        {
+          "path": "resources/js/editor/index.css",
+          "line": 6,
+          "snapshot": "evidence/source/resources/js/editor/index.css"
+        },
+        {
+          "path": "resources/js/editor/index.css",
+          "line": 4,
+          "snapshot": "evidence/source/resources/js/editor/index.css"
+        },
+        {
+          "path": "resources/js/admin/admin.css",
+          "line": 1,
+          "snapshot": "evidence/source/resources/js/admin/admin.css"
+        }
+      ]
+    },
+    {
+      "id": "FE-012",
+      "status": "observed",
+      "area": "fonts",
+      "title": "Tipografia por superfície",
+      "convention": "Editor declara DM Sans no --font-sans; admin aplica DM Sans no shell. spa.blade carrega Inter para site e DM Sans para demais entradas. Bio usa Inter por padrão e catálogo BIO_FONTS sob demanda. resources/css/app.css ainda declara Instrument Sans: não é prova de fonte global efetiva.",
+      "evidence": [
+        {
+          "path": "resources/js/editor/index.css",
+          "line": 7,
+          "snapshot": "evidence/source/resources/js/editor/index.css"
+        },
+        {
+          "path": "resources/js/admin/admin.css",
+          "line": 6,
+          "snapshot": "evidence/source/resources/js/admin/admin.css"
+        },
+        {
+          "path": "resources/views/spa.blade.php",
+          "line": 31,
+          "snapshot": "evidence/source/resources/views/spa.blade.php"
+        },
+        {
+          "path": "resources/js/bio/lib/fonts.ts",
+          "line": 28,
+          "snapshot": "evidence/source/resources/js/bio/lib/fonts.ts"
+        },
+        {
+          "path": "resources/css/app.css",
+          "line": 7,
+          "snapshot": "evidence/source/resources/css/app.css"
+        }
+      ]
+    },
+    {
+      "id": "FE-013",
+      "status": "observed",
+      "area": "icons",
+      "title": "Ícones Lucide e marca",
+      "convention": "Controles usam imports nomeados lucide-react, tamanhos locais 16/18/20px ou h-4/h-5 e aria-label em botões só com ícone. BrandWordmark é componente próprio; não tratar logo e catálogo de ícones públicos como todos Lucide.",
+      "evidence": [
+        {
+          "path": "resources/js/admin/components/AdminTopbar.tsx",
+          "line": 1,
+          "snapshot": "evidence/source/resources/js/admin/components/AdminTopbar.tsx"
+        },
+        {
+          "path": "resources/js/editor/shell/EditorTopbar.tsx",
+          "line": 106,
+          "snapshot": "evidence/source/resources/js/editor/shell/EditorTopbar.tsx"
+        },
+        {
+          "path": "resources/js/shared/brand/BrandWordmark.tsx",
+          "line": 2,
+          "snapshot": "evidence/source/resources/js/shared/brand/BrandWordmark.tsx"
+        }
+      ]
+    },
+    {
+      "id": "FE-014",
+      "status": "observed",
+      "area": "http",
+      "title": "HTTP com sessão e CSRF",
+      "convention": "shared/http.api usa fetch credentials include, Accept JSON, X-Requested-With, X-XSRF-TOKEN de cookie e X-Bio-Id opcional por aba. Retira Content-Type para FormData. Erros usam error ou message da API.",
+      "evidence": [
+        {
+          "path": "resources/js/shared/http.ts",
+          "line": 21,
+          "snapshot": "evidence/source/resources/js/shared/http.ts"
+        },
+        {
+          "path": "resources/js/shared/http.ts",
+          "line": 38,
+          "snapshot": "evidence/source/resources/js/shared/http.ts"
+        }
+      ]
+    },
+    {
+      "id": "FE-015",
+      "status": "observed",
+      "area": "tokens",
+      "title": "Tema persistido",
+      "convention": "Tema light/dark via data-theme no documentElement, preferência lnb-editor-theme com fallback legado e try/catch para armazenamento indisponível. Padrão light.",
+      "evidence": [
+        {
+          "path": "resources/js/editor/lib/theme.ts",
+          "line": 3,
+          "snapshot": "evidence/source/resources/js/editor/lib/theme.ts"
+        },
+        {
+          "path": "resources/js/editor/lib/theme.ts",
+          "line": 10,
+          "snapshot": "evidence/source/resources/js/editor/lib/theme.ts"
+        }
+      ]
+    },
+    {
+      "id": "BE-001",
+      "status": "observed",
+      "area": "backend",
+      "title": "Controller como orquestrador",
+      "convention": "BioPageController recebe FormRequest e UseCase por injeção, usa actor para usuário e retorna JsonResponse. Base Controller documenta apenas orquestração. Escopo observado: fluxo de páginas; não certifica todos os controllers.",
+      "evidence": [
+        {
+          "path": "app/Http/Controllers/Controller.php",
+          "line": 9,
+          "snapshot": "evidence/source/app/Http/Controllers/Controller.php"
+        },
+        {
+          "path": "app/Http/Controllers/BioPageController.php",
+          "line": 41,
+          "snapshot": "evidence/source/app/Http/Controllers/BioPageController.php"
+        }
+      ]
+    },
+    {
+      "id": "BE-002",
+      "status": "observed",
+      "area": "backend",
+      "title": "Casos de uso e persistência",
+      "convention": "CreateBioPage é final, injeta CurrentBioService, SlugService e BioPageRepository, expõe execute e retorna summary. Repository filtra páginas pela relação da bio; manter escopo do proprietário ao buscar slug.",
+      "evidence": [
+        {
+          "path": "app/UseCases/BioPage/CreateBioPage.php",
+          "line": 14,
+          "snapshot": "evidence/source/app/UseCases/BioPage/CreateBioPage.php"
+        },
+        {
+          "path": "app/Repositories/BioPageRepository.php",
+          "line": 38,
+          "snapshot": "evidence/source/app/Repositories/BioPageRepository.php"
+        }
+      ]
+    },
+    {
+      "id": "BE-003",
+      "status": "observed",
+      "area": "validation",
+      "title": "Validação por FormRequest e parser",
+      "convention": "CreateBioPageRequest declara required/string/max para title e nullable/string/max para slug. SaveBioPageRequest tem rules vazio e delega JSON ao BioConfigParser. Não afirmar que toda validação cabe em rules.",
+      "evidence": [
+        {
+          "path": "app/Http/Requests/CreateBioPageRequest.php",
+          "line": 15,
+          "snapshot": "evidence/source/app/Http/Requests/CreateBioPageRequest.php"
+        },
+        {
+          "path": "app/Http/Requests/SaveBioPageRequest.php",
+          "line": 18,
+          "snapshot": "evidence/source/app/Http/Requests/SaveBioPageRequest.php"
+        },
+        {
+          "path": "app/Http/Requests/SaveBioPageRequest.php",
+          "line": 26,
+          "snapshot": "evidence/source/app/Http/Requests/SaveBioPageRequest.php"
+        }
+      ]
+    },
+    {
+      "id": "BE-004",
+      "status": "observed",
+      "area": "backend",
+      "title": "Eloquent tipado",
+      "convention": "BioPage usa atributo Fillable, casts() para JSON, relação BelongsTo tipada e summary com updated_at ISO. Não impor DTO ou API Resource como padrão observado desse fluxo.",
+      "evidence": [
+        {
+          "path": "app/Models/BioPage.php",
+          "line": 22,
+          "snapshot": "evidence/source/app/Models/BioPage.php"
+        },
+        {
+          "path": "app/Models/BioPage.php",
+          "line": 35,
+          "snapshot": "evidence/source/app/Models/BioPage.php"
+        },
+        {
+          "path": "app/Models/BioPage.php",
+          "line": 58,
+          "snapshot": "evidence/source/app/Models/BioPage.php"
+        }
+      ]
+    },
+    {
+      "id": "BE-005",
+      "status": "observed",
+      "area": "backend",
+      "title": "Rascunho e publicação",
+      "convention": "BioPageRepository atualiza json_draft separadamente; publish copia para json_published e altera status. Não publicar implicitamente ao salvar.",
+      "evidence": [
+        {
+          "path": "app/Repositories/BioPageRepository.php",
+          "line": 56,
+          "snapshot": "evidence/source/app/Repositories/BioPageRepository.php"
+        },
+        {
+          "path": "app/Repositories/BioPageRepository.php",
+          "line": 64,
+          "snapshot": "evidence/source/app/Repositories/BioPageRepository.php"
+        }
+      ]
+    },
+    {
+      "id": "BE-006",
+      "status": "observed",
+      "area": "security",
+      "title": "Middleware e erros",
+      "convention": "bootstrap/app.php registra rotas web/admin/bio e aliases onboarded/admin/public.cors, resolução de tenant, exceções específicas de normalização e CSRF. ApplicationException vira error JSON com status; respeitar condições existentes, sem copiar exceções de CSRF para novas rotas.",
+      "evidence": [
+        {
+          "path": "bootstrap/app.php",
+          "line": 18,
+          "snapshot": "evidence/source/bootstrap/app.php"
+        },
+        {
+          "path": "bootstrap/app.php",
+          "line": 43,
+          "snapshot": "evidence/source/bootstrap/app.php"
+        },
+        {
+          "path": "bootstrap/app.php",
+          "line": 51,
+          "snapshot": "evidence/source/bootstrap/app.php"
+        }
+      ]
+    },
+    {
+      "id": "QA-001",
+      "status": "observed",
+      "area": "quality",
+      "title": "Verificação existente",
+      "convention": "package.json define typecheck, testes Node de temas/Vite/editor, Playwright e build separado embed. Composer oferece Pint, Larastan e PHPUnit. .editorconfig pede quatro espaços; TSX observado usa dois. Tratar como divergência existente.",
+      "evidence": [
+        {
+          "path": "package.json",
+          "line": 14,
+          "snapshot": "evidence/source/package.json"
+        },
+        {
+          "path": "composer.json",
+          "line": 21,
+          "snapshot": "evidence/source/composer.json"
+        },
+        {
+          "path": ".editorconfig",
+          "line": 6,
+          "snapshot": "evidence/source/.editorconfig"
+        }
+      ]
+    },
+    {
+      "id": "FE-016",
+      "status": "observed",
+      "area": "icons",
+      "title": "Ícones configuráveis da bio",
+      "convention": "BioIcon resolve primeiro SVGs próprios de marca/social via brandIcons e depois ícones Lucide; nome ausente ou desconhecido retorna null. IconPicker usa catálogo tipado, categorias e busca normalizada sem acentos. Preservar IDs de IconName e prioridade dos SVGs de marca.",
+      "evidence": [
+        {
+          "path": "resources/js/bio/components/icons.tsx",
+          "line": 266,
+          "snapshot": "evidence/source/resources/js/bio/components/icons.tsx"
+        },
+        {
+          "path": "resources/js/editor/lib/iconCatalog.ts",
+          "line": 165,
+          "snapshot": "evidence/source/resources/js/editor/lib/iconCatalog.ts"
+        },
+        {
+          "path": "resources/js/editor/shared/IconPicker.tsx",
+          "line": 12,
+          "snapshot": "evidence/source/resources/js/editor/shared/IconPicker.tsx"
+        }
+      ]
+    }
+  ]
+}

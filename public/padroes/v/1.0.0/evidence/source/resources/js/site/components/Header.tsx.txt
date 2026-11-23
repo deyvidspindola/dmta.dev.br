@@ -1,0 +1,22 @@
+import { BrandWordmark } from '../../shared/brand/BrandWordmark'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowUpRight, Menu, X } from 'lucide-react'
+import { LINKS, NAV } from '../data/content'
+
+export function Header() {
+  const [open, setOpen] = useState(false)
+  const menuButton = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (!open) return
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') { setOpen(false); menuButton.current?.focus() } }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
+  return <header className="site-header"><div className="container-site header-inner">
+    <a href="#inicio" className="wordmark" aria-label="Links na Bio — início"><BrandWordmark /></a>
+    <nav className="desktop-nav" aria-label="Principal">{NAV.map(item => <a key={item.href} href={item.href}>{item.label}</a>)}</nav>
+    <div className="header-actions"><a href={LINKS.login}>Entrar</a><a href={LINKS.free} className="header-contact">Criar minha bio grátis <ArrowUpRight size={16} /></a></div>
+    <a className="mobile-create site-button" href={LINKS.free}>Criar minha bio grátis</a>
+    <button ref={menuButton} className="mobile-menu-button" type="button" aria-label={open ? 'Fechar menu' : 'Abrir menu'} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
+  </div>{open && <nav className="mobile-nav container-site" id="mobile-nav" aria-label="Menu do celular">{NAV.map(item => <a href={item.href} key={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}<a href={LINKS.login}>Área do cliente</a><a href={LINKS.free} onClick={() => setOpen(false)}>Criar minha bio grátis <ArrowUpRight size={16} /></a></nav>}</header>
+}

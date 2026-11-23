@@ -1,0 +1,4 @@
+.brand-wordmark { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font-size: 22px; font-weight: 750; letter-spacing: -1px; line-height: 1.2; }
+.brand-wordmark__dot { width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: var(--brand-accent, #b74725); }
+.brand-wordmark__period { color: var(--brand-accent, #b74725); margin-left: -8px; }
+.brand-wordmark img { flex-shrink: 0; border-radius: 9px; }

@@ -1,0 +1,260 @@
+import { Select } from '../../shared/fields/Select'
+import { Check, ChevronDown, ChevronUp, Copy, MoveRight, PanelLeftClose, PanelLeftOpen, Pencil, Plus, Trash2 } from 'lucide-react'
+import { BRAND_LOGO_URL } from '../lib/brand'
+import type { Theme } from '../lib/theme'
+import type { EditorTabDef, Tab } from './editorTabs'
+import { useIsNarrow } from '../hooks/useIsNarrow'
+
+export interface EditorRailProps {
+  isDemo: boolean
+  theme: Theme
+  railExpanded: boolean
+  activeTab: Tab
+  tabs: EditorTabDef[]
+  onToggleExpand: () => void
+  onSelectTab: (tab: Tab) => void
+  onToggleTheme: () => void
+  /** Mobile: bloco selecionado no canvas → troca dock para modo contextual */
+  selectionActive?: boolean
+  canMoveUp?: boolean
+  canMoveDown?: boolean
+  onEdit?: () => void
+  onDuplicate?: () => void
+  onRemove?: () => void
+  onMoveUp?: () => void
+  onMoveDown?: () => void
+  onClearSelection?: () => void
+  onAddBlock?: () => void
+  /** Seções para "Mover para…" (exclui a seção atual do item selecionado) */
+  moveToSections?: { id: string; label: string }[]
+  onMoveToSection?: (sectionId: string) => void
+}
+
+/**
+ * Navegação do editor:
+ * - Mobile: dock inferior estilo app. Dois modos:
+ *   • navegação (nada selecionado): Dashboard | Canvas | + | Visual | Mais
+ *   • seleção ativa no canvas: Editar | ↑ | ↓ | Duplicar | Excluir | Pronto
+ * - Desktop (xl): rail lateral — Dashboard, Links, Perfil, Visual, Mídias, Config, Conta, Domínio.
+ */
+export function EditorRail({
+  isDemo,
+  railExpanded,
+  activeTab,
+  tabs,
+  onToggleExpand,
+  onSelectTab,
+  selectionActive = false,
+  canMoveUp = false,
+  canMoveDown = false,
+  onEdit,
+  onDuplicate,
+  onRemove,
+  onMoveUp,
+  onMoveDown,
+  onClearSelection,
+  onAddBlock,
+  moveToSections,
+  onMoveToSection,
+}: EditorRailProps) {
+  const narrow = useIsNarrow()
+  const showContextual = narrow && activeTab === 'canvas' && selectionActive
+
+  return (
+    <aside
+      className={`editor-rail sticky z-30 border-b border-border md:col-span-2 xl:col-span-1 xl:row-span-1 xl:border-b-0 xl:border-r xl:py-4 ${
+        isDemo ? 'top-[6.75rem] xl:h-[calc(100vh-6.75rem)]' : 'top-14 xl:h-[calc(100vh-3.5rem)]'
+      } ${railExpanded ? 'editor-rail--expanded xl:px-3' : 'xl:px-2'}`}
+    >
+      {/* Desktop: botão toggle */}
+      <div className="editor-rail-toggle mb-1 hidden shrink-0 items-center gap-2 xl:flex">
+        {railExpanded && (
+          <div className="flex items-center gap-2">
+            <img src={BRAND_LOGO_URL} alt="" className="h-9 w-9 shrink-0 rounded-lg" />
+            <span className="text-sm font-semibold">Menu</span>
+          </div>
+        )}
+        <button
+          type="button"
+          className="rail-btn h-11 w-11 justify-center"
+          onClick={onToggleExpand}
+          title={railExpanded ? 'Recolher menu' : 'Expandir menu'}
+          aria-label={railExpanded ? 'Recolher menu' : 'Expandir menu'}
+        >
+          {railExpanded ? (
+            <PanelLeftClose className="h-5 w-5" />
+          ) : (
+            <PanelLeftOpen className="h-5 w-5" />
+          )}
+        </button>
+      </div>
+
+      {/* Mobile — modo seleção: dock contextual estilo Canva */}
+      {showContextual && (
+        <nav className="editor-rail-nav editor-rail-nav--selection" aria-label="Ações do bloco selecionado">
+          <button
+            type="button"
+            className="rail-btn rail-btn--action"
+            onClick={onEdit}
+            title="Editar bloco"
+            aria-label="Editar"
+          >
+            <Pencil className="h-[1.125rem] w-[1.125rem] shrink-0" />
+            <span className="rail-btn-label">Editar</span>
+          </button>
+
+          <button
+            type="button"
+            className={`rail-btn rail-btn--action ${!canMoveUp ? 'rail-btn--disabled' : ''}`}
+            onClick={canMoveUp ? onMoveUp : undefined}
+            disabled={!canMoveUp}
+            title="Mover para cima"
+            aria-label="Mover para cima"
+          >
+            <ChevronUp className="h-[1.125rem] w-[1.125rem] shrink-0" />
+            <span className="rail-btn-label">Acima</span>
+          </button>
+
+          <button
+            type="button"
+            className={`rail-btn rail-btn--action ${!canMoveDown ? 'rail-btn--disabled' : ''}`}
+            onClick={canMoveDown ? onMoveDown : undefined}
+            disabled={!canMoveDown}
+            title="Mover para baixo"
+            aria-label="Mover para baixo"
+          >
+            <ChevronDown className="h-[1.125rem] w-[1.125rem] shrink-0" />
+            <span className="rail-btn-label">Abaixo</span>
+          </button>
+
+          <button
+            type="button"
+            className="rail-btn rail-btn--action"
+            onClick={onDuplicate}
+            disabled={!onDuplicate}
+            title="Duplicar bloco"
+            aria-label="Duplicar"
+          >
+            <Copy className="h-[1.125rem] w-[1.125rem] shrink-0" />
+            <span className="rail-btn-label">Duplicar</span>
+          </button>
+
+          <button
+            type="button"
+            className="rail-btn rail-btn--action rail-btn--danger"
+            onClick={onRemove}
+            title="Excluir bloco"
+            aria-label="Excluir"
+          >
+            <Trash2 className="h-[1.125rem] w-[1.125rem] shrink-0" />
+            <span className="rail-btn-label">Excluir</span>
+          </button>
+
+          {/* Mover para outra seção — bônus: só aparece quando há seções destino */}
+          {moveToSections && moveToSections.length > 0 && onMoveToSection && (
+            <div className="rail-btn rail-btn--action relative overflow-hidden">
+              <MoveRight className="h-[1.125rem] w-[1.125rem] shrink-0 pointer-events-none" />
+              <span className="rail-btn-label pointer-events-none">Seção</span>
+              <Select
+                className="absolute inset-0 cursor-pointer opacity-0"
+                value=""
+                aria-label="Mover para grupo"
+                onChange={(e) => {
+                  const v = e.target.value
+                  if (v) onMoveToSection(v)
+                  // reset visual
+                  e.target.value = ''
+                }}
+              >
+                <option value="">Mover para…</option>
+                {moveToSections.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.label}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          )}
+
+          <button
+            type="button"
+            className="rail-btn rail-btn--action rail-btn--done"
+            onClick={onClearSelection}
+            title="Desselecionar bloco"
+            aria-label="Pronto"
+          >
+            <Check className="h-[1.125rem] w-[1.125rem] shrink-0" />
+            <span className="rail-btn-label">Pronto</span>
+          </button>
+        </nav>
+      )}
+
+      {/* Mobile — modo navegação: tabs com + central destaque */}
+      {!showContextual && (
+        <nav
+          className={`editor-rail-nav ${railExpanded ? 'editor-rail-nav--expanded' : ''}`}
+          aria-label="Menu principal"
+        >
+          {buildMobileTabs(tabs, narrow).map((item) => {
+            if (item.id === '__add__') {
+              return (
+                <button
+                  key="__add__"
+                  type="button"
+                  className="rail-btn rail-btn--add"
+                  onClick={onAddBlock}
+                  title="Adicionar bloco"
+                  aria-label="Adicionar bloco"
+                >
+                  <Plus className="h-[1.375rem] w-[1.375rem] shrink-0" />
+                  <span className="rail-btn-label">Adicionar</span>
+                </button>
+              )
+            }
+            const tab = item as EditorTabDef
+            const Icon = tab.icon
+            const isActive =
+              activeTab === tab.id ||
+              (tab.id === 'more' && (activeTab === 'images' || activeTab === 'advanced' || activeTab === 'account' || activeTab === 'domain' || activeTab === 'pages' || activeTab === 'forms'))
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                className={`rail-btn ${isActive ? 'active' : ''}`}
+                onClick={() => onSelectTab(tab.id)}
+                title={tab.label}
+                aria-label={tab.label}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <Icon className="h-5 w-5 shrink-0" />
+                <span className="rail-btn-label">{tab.shortLabel}</span>
+                {railExpanded && <span className="rail-btn-label-expanded">{tab.label}</span>}
+              </button>
+            )
+          })}
+        </nav>
+      )}
+    </aside>
+  )
+}
+
+type DockItem = EditorTabDef | { id: '__add__' }
+
+/**
+ * Monta a lista de itens para o dock:
+ * - Mobile: Dashboard | Canvas | [+] | Visual | Mais  (5 slots)
+ *   (Identity acessível pelo toque no header da bio no preview)
+ * - Desktop/tablet: todas as tabs normalmente
+ */
+function buildMobileTabs(tabs: EditorTabDef[], narrow: boolean): DockItem[] {
+  if (!narrow) return tabs
+
+  const find = (id: string) => tabs.find((t) => t.id === id)
+  return [
+    find('dashboard'),
+    find('canvas'),
+    { id: '__add__' },
+    find('appearance'),
+    find('more'),
+  ].filter((x): x is DockItem => Boolean(x))
+}

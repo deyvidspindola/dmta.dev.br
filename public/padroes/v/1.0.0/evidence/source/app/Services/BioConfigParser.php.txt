@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Services;
+
+use App\Exceptions\ApplicationException;
+
+/**
+ * Extrai e valida o JSON da bio enviado pelo editor ou onboarding.
+ */
+class BioConfigParser
+{
+    public function __construct(private BioTabsValidator $tabs = new BioTabsValidator, private LandingContentValidator $landing = new LandingContentValidator) {}
+
+    /**
+     * @param  mixed  $config  Corpo da requisição ou chave `config`
+     * @return array<string, mixed>
+     */
+    public function parse(mixed $config): array
+    {
+        if (! is_array($config) || ! isset($config['brand'])) {
+            throw new ApplicationException('JSON da bio inválido.', 422);
+        }
+
+        validator($config, ['sections' => 'sometimes|nullable|array'])->validate();
+        $this->tabs->validate($config);
+        $this->landing->validate($config['sections'] ?? []);
+
+        return $config;
+    }
+
+    /**
+     * Valida o JSON de uma página interna (exige a lista `sections`).
+     *
+     * @param  mixed  $config  Corpo da requisição ou chave `config`
+     * @return array<string, mixed>
+     */
+    public function parsePage(mixed $config): array
+    {
+        if (! is_array($config) || ! isset($config['sections']) || ! is_array($config['sections'])) {
+            throw new ApplicationException('JSON da página inválido.', 422);
+        }
+
+        validator($config, ['appearance' => 'nullable|array:theme,template,headerType,coverImage,name,tagline,location,instagram,socialLinks,logo,favicon,activeTemplateId,seo,footer', 'appearance.name' => 'nullable|string|max:200', 'appearance.tagline' => 'nullable|string|max:4000', 'appearance.location' => 'nullable|string|max:200', 'appearance.logo' => 'nullable|string|max:2048', 'appearance.favicon' => 'nullable|string|max:2048', 'appearance.instagram' => 'nullable|array', 'appearance.socialLinks' => 'nullable|array', 'appearance.seo' => 'nullable|array', 'appearance.footer' => 'nullable|string|max:4000', 'appearance.activeTemplateId' => 'nullable|string|max:200', 'appearance.coverImage' => 'nullable|string|max:2048', 'appearance.theme' => 'nullable|array', 'appearance.template' => 'nullable|in:classic,pill,outline,solid,glass,soft,shadow', 'appearance.headerType' => 'nullable|in:default,hero,banner,compact,arched,editorial,split'])->validate();
+        $this->tabs->validate($config);
+        $this->landing->validate($config['sections']);
+
+        return $config;
+    }
+}

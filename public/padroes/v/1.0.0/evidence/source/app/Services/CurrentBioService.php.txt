@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Services;
+
+use App\Exceptions\ApplicationException;
+use App\Models\Bio;
+use App\Models\User;
+use App\Repositories\BioRepository;
+use App\Services\Billing\SubscriptionAccess;
+use Illuminate\Http\Request;
+
+/**
+ * Obtém a bio do usuário autenticado, com as regras de acesso compartilhadas.
+ *
+ * Quando um admin entra no modo de edição, a chave `editing_bio_id` na sessão
+ * indica qual bio deve ser usada — o admin permanece Auth::user().
+ *
+ * Quando o header HTTP `X-Bio-Id` está presente ele tem **prioridade** sobre a
+ * sessão, garantindo que publicações em abas simultâneas sempre afetam a bio
+ * correta:
+ *   - Admin: pode editar qualquer bio informada pelo header.
+ *   - Usuário comum: o id do header deve corresponder à sua própria bio; caso
+ *     contrário lança 403.
+ */
+class CurrentBioService
+{
+    public function __construct(
+        private BioRepository $bios,
+        private Request $request,
+        private SubscriptionAccess $billing,
+    ) {}
+
+    /**
+     * Bio existente do usuário, sem exigir status ativo.
+     *
+     * Ordem de resolução:
+     *  1. Header `X-Bio-Id` (admin: qualquer bio; usuário: somente a própria).
+     *  2. Sessão `editing_bio_id` (somente para admins).
+     *  3. Bio vinculada ao usuário (caso padrão).
+     *
+     * @throws ApplicationException (403) Se usuário comum tentar acessar bio alheia via header.
+     * @throws ApplicationException (404) Se a bio não for encontrada.
+     */
+    public function require(User $user): Bio
+    {
+        $bioIdHeader = $this->request->header('X-Bio-Id');
+
+        if ($bioIdHeader !== null) {
+            $bioId = (int) $bioIdHeader;
+            $bio = $this->bios->findById($bioId);
+
+            if (! $bio instanceof Bio) {
+                throw new ApplicationException('Bio não encontrada', 404);
+            }
+
+            if (! $user->is_admin && $bio->user_id !== $user->id) {
+                throw new ApplicationException('Acesso negado', 403);
+            }
+
+            return $bio;
+        }
+
+        if ($user->is_admin) {
+            $editingId = session('editing_bio_id');
+            if ($editingId !== null) {
+                $bio = $this->bios->findById((int) $editingId);
+                if (! $bio instanceof Bio) {
+                    throw new ApplicationException('Bio em edição não encontrada', 404);
+                }
+
+                return $bio;
+            }
+        }
+
+        $bio = $this->bios->findForUser($user);
+        if (! $bio instanceof Bio) {
+            throw new ApplicationException('Bio não encontrada', 404);
+        }
+
+        return $bio;
+    }
+
+    /**
+     * Retorna a bio ou null, sem lançar exceção.
+     *
+     * Útil para presenters que precisam exibir informações opcionais.
+     */
+    public function optional(User $user): ?Bio
+    {
+        try {
+            return $this->require($user);
+        } catch (ApplicationException) {
+            return null;
+        }
+    }
+
+    /**
+     * Bio ativa do usuário. Admins podem acessar bios suspensas.
+     *
+     * @throws ApplicationException (403) Se a bio estiver suspensa e o usuário não for admin.
+     */
+    public function requireActive(User $user): Bio
+    {
+        $bio = $this->billing->reconcile($this->require($user));
+        if (! $bio->isActive() && ! $user->is_admin) {
+            throw new ApplicationException('Bio suspensa', 403);
+        }
+
+        return $bio;
+    }
+}

@@ -1,0 +1,132 @@
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { resolveInputs } from './vite.entries.mjs';
+
+const rootAlias = {
+    '@bio-types': path.resolve(import.meta.dirname, 'resources/js/bio/types/bio.ts'),
+    '@bio': path.resolve(import.meta.dirname, 'resources/js/bio'),
+    '@site': path.resolve(import.meta.dirname, 'resources/js/bio'),
+};
+
+/** Pastas que não devem acionar o file watcher (economiza CPU/RAM). */
+const WATCH_IGNORED = [
+    '**/storage/**',
+    '**/vendor/**',
+    '**/graphify-out/**',
+    '**/public/build/**',
+    '**/.git/**',
+    '**/coverage/**',
+    '**/tests/**',
+    '**/node_modules/**',
+    '**/bootstrap/cache/**',
+];
+
+export default defineConfig(({ command }) => {
+    const inputs = resolveInputs(process.env, { forceAll: command === 'build' });
+    const usePolling = process.env.VITE_USE_POLLING === 'true';
+
+    return {
+        plugins: [
+            laravel({
+                input: inputs,
+                // refresh:true observa Livewire/lang inexistentes — restringe ao que existe.
+                refresh: [
+                    'resources/views/**',
+                    'routes/web.php',
+                    'routes/admin.php',
+                    'routes/bio.php',
+                ],
+            }),
+            react(),
+            tailwindcss(),
+        ],
+        resolve: {
+            alias: rootAlias,
+        },
+        css: {
+            devSourcemap: false,
+        },
+        optimizeDeps: {
+            entries: inputs,
+            holdUntilCrawlEnd: false,
+            include: [
+                'react',
+                'react-dom',
+                'react/jsx-runtime',
+                'clsx',
+                'lucide-react',
+                '@tiptap/react',
+                '@tiptap/starter-kit',
+                '@tiptap/extension-text-style',
+                '@tiptap/extension-text-align',
+                '@tiptap/extension-character-count',
+                'chart.js',
+                'react-chartjs-2',
+                'leaflet',
+            ],
+        },
+        build: {
+            sourcemap: false,
+            reportCompressedSize: false,
+            cssCodeSplit: true,
+            chunkSizeWarningLimit: 1200,
+            rolldownOptions: {
+                output: {
+                    manualChunks(id) {
+                        if (!id.includes('node_modules')) {
+                            return undefined;
+                        }
+                        if (id.includes('@tiptap') || id.includes('prosemirror')) {
+                            return 'vendor-tiptap';
+                        }
+                        if (id.includes('exceljs') || id.includes('jspdf')) {
+                            return 'vendor-export';
+                        }
+                        if (id.includes('leaflet')) {
+                            return 'vendor-leaflet';
+                        }
+                        if (id.includes('chart.js') || id.includes('react-chartjs-2')) {
+                            return 'vendor-charts';
+                        }
+                        if (id.includes('lucide-react')) {
+                            return 'vendor-icons';
+                        }
+                        if (id.includes('/react/') || id.includes('/react-dom/')) {
+                            return 'vendor-react';
+                        }
+                        return 'vendor';
+                    },
+                },
+            },
+        },
+        server: {
+            host: '0.0.0.0',
+            port: 5173,
+            strictPort: true,
+            origin: 'http://localhost:5173',
+            cors: {
+                origin: [
+                    'http://localhost:8000',
+                    'http://127.0.0.1:8000',
+                    'http://localhost:5173',
+                    'http://127.0.0.1:5173',
+                ],
+            },
+            hmr: {
+                host: 'localhost',
+                port: 5173,
+            },
+            warmup: {
+                clientFiles: inputs,
+            },
+            watch: {
+                ignored: WATCH_IGNORED,
+                usePolling,
+                ...(usePolling ? { interval: 1000 } : {}),
+            },
+        },
+    };
+});

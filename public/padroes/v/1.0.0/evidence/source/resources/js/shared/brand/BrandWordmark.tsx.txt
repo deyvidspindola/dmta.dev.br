@@ -1,0 +1,4 @@
+/** Assinatura tipográfica compartilhada entre o site e o portal. */
+export function BrandWordmark({ className = '', withIcon = false }: { className?: string; withIcon?: boolean }) {
+  return <span className={`brand-wordmark ${className}`} aria-label="Links na Bio">{withIcon ? <img src="/logo-instabio.svg" alt="" width="32" height="32" /> : <span aria-hidden="true" className="brand-wordmark__dot" />}links na bio<span aria-hidden="true" className="brand-wordmark__period">.</span></span>
+}

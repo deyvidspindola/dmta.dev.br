@@ -1,0 +1,37 @@
+{
+  "name": "engineering-standards-laravel-react",
+  "version": "1.0.0",
+  "schemaVersion": 1,
+  "language": "pt-BR",
+  "target": {
+    "laravel": "13.x",
+    "react": "19.x",
+    "php": "^8.3"
+  },
+  "source": {
+    "path": "/home/drspindola/projects/links-na-bio",
+    "commit": "e8ff6a884f45104131c336e1df13fc186cb19e83",
+    "snapshot": "working-tree",
+    "modified": true,
+    "evidence": "evidence/index.json"
+  },
+  "observedLockedVersions": {
+    "laravel/framework": "v13.25.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "vite": "8.2.1",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.7.3",
+    "lucide-react": "1.31.0"
+  },
+  "standards": "catalog/standards.json",
+  "recommendations": "docs/recomendacoes.md",
+  "mcp": {
+    "transport": "streamable-http",
+    "endpoint": "/mcp",
+    "mode": "stateless-json",
+    "runtime": "Node.js >=22",
+    "source": "server/server.mjs"
+  },
+  "releaseDate": "2026-11-22"
+}

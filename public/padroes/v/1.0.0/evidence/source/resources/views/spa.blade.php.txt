@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-N2CSGXFHHC"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-N2CSGXFHHC');
+        </script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>{{ $title ?? ($entry === 'site' ? 'Links na Bio — Tudo o que você faz em um único link' : 'Links na Bio') }}</title>
+        @if(isset($signup))
+            <script>window.__SIGNUP__ = {{ Illuminate\Support\Js::from($signup) }}; window.__REGISTRATION__ = {{ Illuminate\Support\Js::from($registration) }};</script>
+        @endif
+        @if(isset($onboarding))
+            <script>window.__ONBOARDING__ = {{ Illuminate\Support\Js::from($onboarding) }};</script>
+        @endif
+        @if ($entry === 'site')
+            <script>window.__SIGNUP__ = {{ Illuminate\Support\Js::from(app(\App\Services\SignupConfig::class)->publicData()) }};</script>
+            <script>window.__SITE_PLANS__ = {{ Illuminate\Support\Js::from(collect(config('linksnabio.plans'))->map(fn ($plan) => Illuminate\Support\Arr::only($plan, ['max_links', 'max_images', 'max_image_bytes', 'analytics_days']))->all()) }};</script>
+            <script>window.__SITE_PRICING__ = {{ Illuminate\Support\Js::from(app(\App\Services\Billing\PlanPricing::class)->publicData()) }};</script>
+            <meta name="description" content="Reúna seus links, fotos, vídeos e formas de contato. Crie sua página e compartilhe onde quiser.">
+        @endif
+        @if (in_array($entry, ['site', 'editor', 'app', 'admin']))
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family={{ $entry === 'site' ? 'Inter:wght@400;500;600;700;900' : 'DM+Sans:wght@400;500;600;700;800;900;1000' }}&display=swap" rel="stylesheet">
+        @endif
+        @if (!empty($description))
+            <meta name="description" content="{{ $description }}">
+        @endif
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        @php
+            $entries = [
+                'site' => 'resources/js/site/main.tsx',
+                'app' => 'resources/js/app/main.tsx',
+                'editor' => 'resources/js/editor/main.tsx',
+                'admin' => 'resources/js/admin/main.tsx',
+            ];
+        @endphp
+        @if ($entry === 'admin')
+            <script>try { document.documentElement.setAttribute('data-theme', localStorage.getItem('lnb-editor-theme') || localStorage.getItem('insta-bio-admin-theme') || 'light'); } catch (_) { document.documentElement.setAttribute('data-theme', 'light'); }</script>
+        @endif
+        @viteReactRefresh
+        @vite($entries[$entry])
+    </head>
+    <body>
+        @if ($errors->any())
+            <div id="login-error" hidden>{{ $errors->first() }}</div>
+        @endif
+        @if (session('verification_error'))
+            <div id="verification-error" hidden>{{ session('verification_error') }}</div>
+        @endif
+        <div id="root"></div>
+    </body>
+</html>

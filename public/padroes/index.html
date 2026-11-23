@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Padrões de engenharia | DMTA</title>
+<style>body{font:1rem/1.6 system-ui;max-width:58rem;margin:auto;padding:2rem 1rem;color:#182432;background:#f8fafc}a{color:#1459aa}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:1rem;background:#e9eef5;border-radius:.5rem}li{overflow-wrap:anywhere;margin:.4rem 0}</style>
+<main><h1>Padrões de engenharia</h1><p>Convenções Laravel e React para reutilizar com IA. Versão 1.0.0.</p>
+<p><a href="regras.md">Ler todas as regras em Markdown</a> · <a href="v/1.0.0/regras.md">Usar a versão fixa 1.0.0</a></p>
+<h2>Como usar</h2><p>Copie este pedido e acrescente a descrição do projeto:</p><pre>Leia https://dmta.dev.br/padroes/regras.md e aplique as convenções pertinentes ao criar este projeto. Consulte os exemplos e evidências quando necessário. Informe incompatibilidades antes de adaptar. Projeto: [descreva aqui].</pre>
+<p>A IA precisa conseguir abrir URLs. Se não tiver esse recurso, baixe o Markdown e anexe ao projeto ou à conversa. O link principal acompanha futuras atualizações; a URL versionada mantém a referência desta edição.</p>
+<p>As convenções têm escopos específicos. Recomendações estão identificadas separadamente. Esta publicação disponibiliza arquivos por HTTP; o servidor MCP original não está instalado no site.</p>
+<h2>Biblioteca e evidências</h2><p><a href="v/1.0.0/files.json">Inventário com hashes SHA-256</a>. Exemplos de código são publicados como texto.</p><ul><li><a href="v/1.0.0/manifest.json">manifest.json</a></li>
+<li><a href="v/1.0.0/AGENTS.md">AGENTS.md</a></li>
+<li><a href="v/1.0.0/CHANGELOG.md">CHANGELOG.md</a></li>
+<li><a href="v/1.0.0/catalog/standards.json">catalog/standards.json</a></li>
+<li><a href="v/1.0.0/catalog/tokens.json">catalog/tokens.json</a></li>
+<li><a href="v/1.0.0/examples/README.md">examples/README.md</a></li>
+<li><a href="v/1.0.0/examples/laravel/BioPage.php.txt">examples/laravel/BioPage.php</a></li>
+<li><a href="v/1.0.0/examples/laravel/BioPageController.php.txt">examples/laravel/BioPageController.php</a></li>
+<li><a href="v/1.0.0/examples/laravel/BioPageRepository.php.txt">examples/laravel/BioPageRepository.php</a></li>
+<li><a href="v/1.0.0/examples/laravel/CreateBioPage.php.txt">examples/laravel/CreateBioPage.php</a></li>
+<li><a href="v/1.0.0/examples/laravel/CreateBioPageRequest.php.txt">examples/laravel/CreateBioPageRequest.php</a></li>
+<li><a href="v/1.0.0/examples/provenance.json">examples/provenance.json</a></li>
+<li><a href="v/1.0.0/examples/react/http.ts.txt">examples/react/http.ts</a></li>
+<li><a href="v/1.0.0/examples/react/surfaceTokens.ts.txt">examples/react/surfaceTokens.ts</a></li>
+<li><a href="v/1.0.0/examples/react/theme.ts.txt">examples/react/theme.ts</a></li>
+<li><a href="v/1.0.0/examples/react/tokens.css.txt">examples/react/tokens.css</a></li>
+<li><a href="v/1.0.0/examples/react/ui.tsx.txt">examples/react/ui.tsx</a></li>
+<li><a href="v/1.0.0/evidence/index.json">evidence/index.json</a></li>
+<li><a href="v/1.0.0/evidence/integrity.json">evidence/integrity.json</a></li>
+<li><a href="v/1.0.0/evidence/source/.editorconfig.txt">evidence/source/.editorconfig</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Exceptions/ApplicationException.php.txt">evidence/source/app/Exceptions/ApplicationException.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Http/Controllers/BioPageController.php.txt">evidence/source/app/Http/Controllers/BioPageController.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Http/Controllers/Controller.php.txt">evidence/source/app/Http/Controllers/Controller.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Http/Requests/CreateBioPageRequest.php.txt">evidence/source/app/Http/Requests/CreateBioPageRequest.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Http/Requests/SaveBioPageRequest.php.txt">evidence/source/app/Http/Requests/SaveBioPageRequest.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Models/BioPage.php.txt">evidence/source/app/Models/BioPage.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Repositories/BioPageRepository.php.txt">evidence/source/app/Repositories/BioPageRepository.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Services/BioConfigParser.php.txt">evidence/source/app/Services/BioConfigParser.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/Services/CurrentBioService.php.txt">evidence/source/app/Services/CurrentBioService.php</a></li>
+<li><a href="v/1.0.0/evidence/source/app/UseCases/BioPage/CreateBioPage.php.txt">evidence/source/app/UseCases/BioPage/CreateBioPage.php</a></li>
+<li><a href="v/1.0.0/evidence/source/bootstrap/app.php.txt">evidence/source/bootstrap/app.php</a></li>
+<li><a href="v/1.0.0/evidence/source/composer.json">evidence/source/composer.json</a></li>
+<li><a href="v/1.0.0/evidence/source/composer.lock.txt">evidence/source/composer.lock</a></li>
+<li><a href="v/1.0.0/evidence/source/package-lock.json">evidence/source/package-lock.json</a></li>
+<li><a href="v/1.0.0/evidence/source/package.json">evidence/source/package.json</a></li>
+<li><a href="v/1.0.0/evidence/source/phpstan.neon.txt">evidence/source/phpstan.neon</a></li>
+<li><a href="v/1.0.0/evidence/source/phpunit.xml.txt">evidence/source/phpunit.xml</a></li>
+<li><a href="v/1.0.0/evidence/source/playwright.config.ts.txt">evidence/source/playwright.config.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/css/app.css.txt">evidence/source/resources/css/app.css</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/README.md">evidence/source/resources/js/README.md</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/admin/admin.css.txt">evidence/source/resources/js/admin/admin.css</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/admin/components/AdminRail.tsx.txt">evidence/source/resources/js/admin/components/AdminRail.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/admin/components/AdminTopbar.tsx.txt">evidence/source/resources/js/admin/components/AdminTopbar.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/app/components/AccountForm.tsx.txt">evidence/source/resources/js/app/components/AccountForm.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/app/hooks/useAccount.ts.txt">evidence/source/resources/js/app/hooks/useAccount.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/bio/components/icons.tsx.txt">evidence/source/resources/js/bio/components/icons.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/bio/lib/fonts.ts.txt">evidence/source/resources/js/bio/lib/fonts.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/editor/hooks/useIsNarrow.ts.txt">evidence/source/resources/js/editor/hooks/useIsNarrow.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/editor/index.css.txt">evidence/source/resources/js/editor/index.css</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/editor/lib/iconCatalog.ts.txt">evidence/source/resources/js/editor/lib/iconCatalog.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/editor/lib/theme.ts.txt">evidence/source/resources/js/editor/lib/theme.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/editor/shared/IconPicker.tsx.txt">evidence/source/resources/js/editor/shared/IconPicker.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/editor/shell/EditorRail.tsx.txt">evidence/source/resources/js/editor/shell/EditorRail.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/editor/shell/EditorTopbar.tsx.txt">evidence/source/resources/js/editor/shell/EditorTopbar.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/brand/BrandWordmark.tsx.txt">evidence/source/resources/js/shared/brand/BrandWordmark.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/brand/wordmark.css.txt">evidence/source/resources/js/shared/brand/wordmark.css</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/csrf.ts.txt">evidence/source/resources/js/shared/csrf.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/fields/Select.tsx.txt">evidence/source/resources/js/shared/fields/Select.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/fields/SelectControl.tsx.txt">evidence/source/resources/js/shared/fields/SelectControl.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/fields/fields.css.txt">evidence/source/resources/js/shared/fields/fields.css</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/fields/inputMasks.ts.txt">evidence/source/resources/js/shared/fields/inputMasks.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/fields/surfaceTokens.ts.txt">evidence/source/resources/js/shared/fields/surfaceTokens.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/http.ts.txt">evidence/source/resources/js/shared/http.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/shared/ui/index.tsx.txt">evidence/source/resources/js/shared/ui/index.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/site/components/Header.tsx.txt">evidence/source/resources/js/site/components/Header.tsx</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/js/site/index.css.txt">evidence/source/resources/js/site/index.css</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/views/bio.blade.php.txt">evidence/source/resources/views/bio.blade.php</a></li>
+<li><a href="v/1.0.0/evidence/source/resources/views/spa.blade.php.txt">evidence/source/resources/views/spa.blade.php</a></li>
+<li><a href="v/1.0.0/evidence/source/routes/admin.php.txt">evidence/source/routes/admin.php</a></li>
+<li><a href="v/1.0.0/evidence/source/routes/bio.php.txt">evidence/source/routes/bio.php</a></li>
+<li><a href="v/1.0.0/evidence/source/routes/web.php.txt">evidence/source/routes/web.php</a></li>
+<li><a href="v/1.0.0/evidence/source/tests/browser/app-layouts.spec.ts.txt">evidence/source/tests/browser/app-layouts.spec.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/tests/browser/shared-fields.spec.ts.txt">evidence/source/tests/browser/shared-fields.spec.ts</a></li>
+<li><a href="v/1.0.0/evidence/source/tests/frontend/editorReliability.test.mjs.txt">evidence/source/tests/frontend/editorReliability.test.mjs</a></li>
+<li><a href="v/1.0.0/evidence/source/tests/frontend/viteEntries.test.mjs.txt">evidence/source/tests/frontend/viteEntries.test.mjs</a></li>
+<li><a href="v/1.0.0/evidence/source/tsconfig.json">evidence/source/tsconfig.json</a></li>
+<li><a href="v/1.0.0/evidence/source/vite.config.js.txt">evidence/source/vite.config.js</a></li>
+<li><a href="v/1.0.0/evidence/source/vite.entries.mjs.txt">evidence/source/vite.entries.mjs</a></li>
+<li><a href="v/1.0.0/evidence/source-status.txt.txt">evidence/source-status.txt</a></li>
+<li><a href="v/1.0.0/docs/frontend.md">docs/frontend.md</a></li>
+<li><a href="v/1.0.0/docs/backend.md">docs/backend.md</a></li>
+<li><a href="v/1.0.0/docs/catalogo.md">docs/catalogo.md</a></li>
+<li><a href="v/1.0.0/docs/recomendacoes.md">docs/recomendacoes.md</a></li></ul></main></html>

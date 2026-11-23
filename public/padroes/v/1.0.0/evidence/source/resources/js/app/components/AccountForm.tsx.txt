@@ -1,0 +1,185 @@
+import { ErrorText } from '../../shared/ui'
+import { useAccount } from '../hooks/useAccount'
+
+/**
+ * Formulário de alteração de e-mail e senha da conta.
+ * Campos no mesmo padrão visual dos editores de links (.field + inputs).
+ */
+export function AccountForm() {
+  const {
+    account,
+    loading,
+    newEmail,
+    setNewEmail,
+    confirmEmail,
+    setConfirmEmail,
+    emailMessage,
+    emailError,
+    emailPending,
+    submitEmail,
+    currentPassword,
+    setCurrentPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
+    passwordMessage,
+    passwordError,
+    passwordPending,
+    submitPassword,
+  } = useAccount()
+
+  if (loading) {
+    return <p className="text-sm text-foreground/70">Carregando dados da conta…</p>
+  }
+
+  const hasPassword = account?.has_password ?? false
+
+  return (
+    <div className="account-form space-y-8">
+      <section className="account-form__section">
+        <header className="mb-4">
+          <h2 className="text-base font-semibold text-foreground">E-mail</h2>
+          <p className="mt-1 text-sm leading-snug text-foreground/70">
+            {account?.email ? (
+              <>
+                Atual:{' '}
+                <span className="font-medium text-foreground">{account.email}</span>
+              </>
+            ) : (
+              'Defina o e-mail de acesso da conta.'
+            )}
+          </p>
+        </header>
+
+        {!hasPassword && (
+          <div className="mb-4 rounded-lg border border-border bg-card px-3 py-2.5 text-sm leading-snug text-foreground/80">
+            Defina uma senha para poder alterar o e-mail da conta.
+          </div>
+        )}
+
+        <form className="space-y-1" onSubmit={(e) => void submitEmail(e)}>
+          <div className="field min-w-0">
+            <label htmlFor="account-new-email">Novo e-mail</label>
+            <input
+              id="account-new-email"
+              type="email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+              disabled={!hasPassword || emailPending}
+              required
+              autoComplete="email"
+            />
+          </div>
+
+          <div className="field min-w-0">
+            <label htmlFor="account-confirm-email">Confirmar novo e-mail</label>
+            <input
+              id="account-confirm-email"
+              type="email"
+              value={confirmEmail}
+              onChange={(e) => setConfirmEmail(e.target.value)}
+              disabled={!hasPassword || emailPending}
+              required
+              autoComplete="email"
+            />
+          </div>
+
+          {emailMessage && (
+            <p className="mb-3 text-sm font-medium text-primary">{emailMessage}</p>
+          )}
+          <ErrorText>{emailError}</ErrorText>
+
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={!hasPassword || emailPending}
+              className="btn-primary min-h-10 w-full sm:w-auto"
+            >
+              {emailPending ? 'Salvando…' : 'Salvar e-mail'}
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <hr className="border-border" />
+
+      <section className="account-form__section">
+        <header className="mb-4">
+          <h2 className="text-base font-semibold text-foreground">
+            {hasPassword ? 'Alterar senha' : 'Definir senha'}
+          </h2>
+          <p className="mt-1 text-sm leading-snug text-foreground/70">
+            {hasPassword
+              ? 'Use no mínimo 8 caracteres.'
+              : 'Crie uma senha para entrar sem depender do Google.'}
+          </p>
+        </header>
+
+        <form className="space-y-1" onSubmit={(e) => void submitPassword(e)}>
+          {hasPassword && (
+            <div className="field min-w-0">
+              <label htmlFor="account-current-password">Senha atual</label>
+              <input
+                id="account-current-password"
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                required
+                disabled={passwordPending}
+                autoComplete="current-password"
+              />
+            </div>
+          )}
+
+          <div className="field min-w-0">
+            <label htmlFor="account-new-password">Nova senha</label>
+            <input
+              id="account-new-password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              minLength={8}
+              disabled={passwordPending}
+              autoComplete="new-password"
+            />
+          </div>
+
+          <div className="field min-w-0">
+            <label htmlFor="account-confirm-password">Confirmar nova senha</label>
+            <input
+              id="account-confirm-password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={8}
+              disabled={passwordPending}
+              autoComplete="new-password"
+            />
+          </div>
+
+          {passwordMessage && (
+            <p className="mb-3 text-sm font-medium text-primary">{passwordMessage}</p>
+          )}
+          <ErrorText>{passwordError}</ErrorText>
+
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={passwordPending}
+              className="btn-primary min-h-10 w-full sm:w-auto"
+            >
+              {passwordPending
+                ? 'Salvando…'
+                : hasPassword
+                  ? 'Alterar senha'
+                  : 'Definir senha'}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  )
+}

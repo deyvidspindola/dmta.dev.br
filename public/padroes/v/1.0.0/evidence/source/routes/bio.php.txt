@@ -1,0 +1,102 @@
+<?php
+
+use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BillingController;
+use App\Http\Controllers\BioController;
+use App\Http\Controllers\BioPageController;
+use App\Http\Controllers\CorePaymentWebhookController;
+use App\Http\Controllers\DomainController;
+use App\Http\Controllers\EmbedController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\MapsController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\PublicBioController;
+use App\Http\Controllers\TemplateCatalogController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\AllowPublicCors;
+use App\Http\Middleware\ProtectEditorRevision;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/api/templates', [TemplateCatalogController::class, 'index']);
+Route::get('/api/templates/{key}', [TemplateCatalogController::class, 'show']);
+
+Route::get('/api/auth/session', [BioController::class, 'session']);
+$pageSlugPattern = '[a-z0-9](?:[a-z0-9-]{1,38}[a-z0-9])?';
+
+Route::middleware([AllowPublicCors::class])->group(function () use ($pageSlugPattern) {
+    Route::match(['post', 'options'], '/api/analytics/track', [AnalyticsController::class, 'track']);
+    Route::match(['get', 'options'], '/api/public/bio/{slug}', [PublicBioController::class, 'json']);
+    Route::match(['get', 'options'], '/api/public/bio/{slug}/pages/{pageSlug}', [PublicBioController::class, 'jsonPage'])
+        ->where('pageSlug', $pageSlugPattern);
+    Route::match(['get', 'options'], '/api/public/forms/{slug}', [FormController::class, 'publicIndex']);
+    Route::match(['post', 'options'], '/api/public/forms/{slug}/{id}', [FormController::class, 'submit'])
+        ->whereNumber('id')
+        ->middleware('throttle:10,1');
+});
+Route::post('/webhooks/mercadopago', [BillingController::class, 'webhook'])->middleware('throttle:120,1');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/api/onboarding', [OnboardingController::class, 'store']);
+    Route::get('/api/onboarding/slug', [OnboardingController::class, 'checkSlug']);
+});
+
+Route::middleware(['auth', 'verified', 'onboarded'])->group(function () use ($pageSlugPattern) {
+    Route::get('/api/forms', [FormController::class, 'index']);
+    Route::post('/api/forms', [FormController::class, 'store']);
+    Route::put('/api/forms/{id}', [FormController::class, 'update'])->whereNumber('id');
+    Route::patch('/api/forms/{id}/active', [FormController::class, 'toggle'])->whereNumber('id');
+    Route::delete('/api/forms/{id}', [FormController::class, 'destroy'])->whereNumber('id');
+    Route::get('/api/forms/{id}/submissions', [FormController::class, 'submissions'])->whereNumber('id');
+    Route::post('/api/auth/logout', [LoginController::class, 'destroy']);
+    Route::get('/api/bio/load', [BioController::class, 'load'])->middleware(ProtectEditorRevision::class);
+    Route::post('/api/bio/save', [BioController::class, 'save'])->middleware(ProtectEditorRevision::class);
+    Route::post('/api/bio/publish', [BioController::class, 'publish'])->middleware(ProtectEditorRevision::class);
+    Route::post('/api/bio/revert', [BioController::class, 'revert'])->middleware(ProtectEditorRevision::class);
+    Route::post('/api/bio/restore-backup', [BioController::class, 'restoreBackup'])->middleware(ProtectEditorRevision::class);
+    Route::get('/api/bio/paths', [BioController::class, 'paths']);
+    Route::get('/api/bio/pages', [BioPageController::class, 'index']);
+    Route::post('/api/bio/pages', [BioPageController::class, 'store']);
+    Route::get('/api/bio/pages/{pageSlug}', [BioPageController::class, 'show'])->where('pageSlug', $pageSlugPattern)->middleware(ProtectEditorRevision::class);
+    Route::put('/api/bio/pages/{pageSlug}', [BioPageController::class, 'update'])->where('pageSlug', $pageSlugPattern)->middleware(ProtectEditorRevision::class);
+    Route::post('/api/bio/pages/{pageSlug}/publish', [BioPageController::class, 'publish'])->where('pageSlug', $pageSlugPattern)->middleware(ProtectEditorRevision::class);
+    Route::delete('/api/bio/pages/{pageSlug}', [BioPageController::class, 'destroy'])->where('pageSlug', $pageSlugPattern)->middleware(ProtectEditorRevision::class);
+    Route::get('/api/assets/list', [MediaController::class, 'index']);
+    Route::post('/api/assets/upload', [MediaController::class, 'store']);
+    Route::post('/api/assets/delete', [MediaController::class, 'destroy']);
+    Route::get('/api/billing', [BillingController::class, 'show']);
+    Route::post('/api/billing/checkout', [BillingController::class, 'checkout'])->middleware('throttle:10,1');
+    Route::post('/api/billing/cancel', [BillingController::class, 'cancel'])->middleware('throttle:10,1');
+    Route::post('/api/billing/coupon', [BillingController::class, 'coupon'])->middleware('throttle:20,1');
+    Route::post('/api/billing/reactivate', [BillingController::class, 'reactivate'])->middleware('throttle:10,1');
+    Route::get('/api/billing/backup', [BillingController::class, 'backup']);
+    Route::post('/api/billing/sandbox', [BillingController::class, 'sandbox']);
+    Route::get('/api/domain', [DomainController::class, 'show']);
+    Route::post('/api/domain', [DomainController::class, 'store']);
+    Route::post('/api/domain/verify', [DomainController::class, 'verify']);
+    Route::put('/api/domain/ftp', [DomainController::class, 'saveFtp']);
+    Route::post('/api/domain/ftp/upload', [DomainController::class, 'uploadFtp']);
+    Route::get('/api/bio/embed-html', [EmbedController::class, 'html']);
+    Route::delete('/api/domain', [DomainController::class, 'destroy']);
+    Route::get('/api/analytics/summary', [AnalyticsController::class, 'summary']);
+    Route::get('/api/analytics/timeseries', [AnalyticsController::class, 'timeseries']);
+    Route::get('/api/analytics/clicks', [AnalyticsController::class, 'clicks']);
+    Route::match(['get', 'post'], '/api/maps/resolve', [MapsController::class, 'resolve']);
+
+    // Conta do usuário: e-mail e senha
+    Route::get('/api/user', [UserController::class, 'me']);
+    Route::post('/api/user/email', [UserController::class, 'updateEmail']);
+    Route::post('/api/user/password', [UserController::class, 'updatePassword']);
+});
+
+Route::get('/{slug}/{pageSlug}', [PublicBioController::class, 'showPage'])
+    ->where('slug', $pageSlugPattern)
+    ->where('pageSlug', $pageSlugPattern)
+    ->name('bio.page.show');
+
+Route::get('/{slug}', [PublicBioController::class, 'show'])
+    ->where('slug', '[a-z0-9](?:[a-z0-9-]{1,38}[a-z0-9])?')
+    ->name('bio.show');
+
+Route::post('/webhooks/dmta/payments', CorePaymentWebhookController::class)->middleware('throttle:120,1');

@@ -1,0 +1,21 @@
+import { useEffect, useState } from 'react'
+
+const QUERY = '(max-width: 767px)'
+
+/** Retorna true quando a viewport está em breakpoint mobile (< 768px). */
+export function useIsNarrow(): boolean {
+  const [narrow, setNarrow] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(QUERY).matches : false,
+  )
+
+  useEffect(() => {
+    const mq = window.matchMedia(QUERY)
+    function handleChange() {
+      setNarrow(mq.matches)
+    }
+    mq.addEventListener('change', handleChange)
+    return () => mq.removeEventListener('change', handleChange)
+  }, [])
+
+  return narrow
+}

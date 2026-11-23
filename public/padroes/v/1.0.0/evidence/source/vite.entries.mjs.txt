@@ -1,0 +1,75 @@
+/**
+ * Catálogo de entrypoints do Vite.
+ * Use VITE_APP=editor,bio (ou paths) no `vite` para reduzir memória no dev.
+ * Build de produção sempre usa todos os inputs.
+ */
+
+export const ALL_INPUTS = Object.freeze([
+    'resources/js/site/main.tsx',
+    'resources/js/app/main.tsx',
+    'resources/js/editor/main.tsx',
+    'resources/js/payment-return.ts',
+    'resources/js/editor/preview/main.tsx',
+    'resources/js/admin/main.tsx',
+    'resources/js/bio/main.tsx',
+    'resources/js/bio/embed.tsx',
+]);
+
+export const APP_INPUTS = Object.freeze({
+    site: ['resources/js/site/main.tsx'],
+    app: ['resources/js/app/main.tsx'],
+    editor: [
+        'resources/js/editor/main.tsx',
+        'resources/js/editor/preview/main.tsx',
+    ],
+    admin: ['resources/js/admin/main.tsx'],
+    bio: [
+        'resources/js/bio/main.tsx',
+        'resources/js/bio/embed.tsx',
+    ],
+    payment: ['resources/js/payment-return.ts'],
+});
+
+/**
+ * @param {NodeJS.ProcessEnv} [env]
+ * @param {{ forceAll?: boolean }} [options]
+ * @returns {string[]}
+ */
+export function resolveInputs(env = process.env, options = {}) {
+    if (options.forceAll) {
+        return [...ALL_INPUTS];
+    }
+
+    const raw = String(env.VITE_APP ?? env.VITE_ENTRIES ?? '').trim();
+    if (raw === '' || raw === 'all') {
+        return [...ALL_INPUTS];
+    }
+
+    /** @type {Set<string>} */
+    const selected = new Set();
+
+    for (const token of raw.split(',').map((part) => part.trim()).filter(Boolean)) {
+        const group = APP_INPUTS[/** @type {keyof typeof APP_INPUTS} */ (token)];
+        if (group) {
+            for (const input of group) {
+                selected.add(input);
+            }
+            continue;
+        }
+
+        if (ALL_INPUTS.includes(token)) {
+            selected.add(token);
+            continue;
+        }
+
+        throw new Error(
+            `VITE_APP inválido: "${token}". Use all, ${Object.keys(APP_INPUTS).join(', ')} ou um path de ALL_INPUTS.`,
+        );
+    }
+
+    if (selected.size === 0) {
+        throw new Error('VITE_APP não resolveu nenhum entrypoint.');
+    }
+
+    return ALL_INPUTS.filter((input) => selected.has(input));
+}

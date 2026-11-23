@@ -1,0 +1,11 @@
+{
+  "react/ui.tsx": "resources/js/shared/ui/index.tsx",
+  "react/http.ts": "resources/js/shared/http.ts",
+  "react/theme.ts": "resources/js/editor/lib/theme.ts",
+  "react/surfaceTokens.ts": "resources/js/shared/fields/surfaceTokens.ts",
+  "laravel/CreateBioPageRequest.php": "app/Http/Requests/CreateBioPageRequest.php",
+  "laravel/CreateBioPage.php": "app/UseCases/BioPage/CreateBioPage.php",
+  "laravel/BioPageController.php": "app/Http/Controllers/BioPageController.php",
+  "laravel/BioPageRepository.php": "app/Repositories/BioPageRepository.php",
+  "laravel/BioPage.php": "app/Models/BioPage.php"
+}

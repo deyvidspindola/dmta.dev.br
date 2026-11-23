@@ -1,0 +1,47 @@
+import { test, expect } from './fixtures'
+
+test('apps compactos e condensados mantêm títulos e ações dentro dos cards', async ({ page }) => {
+  await page.goto('/login')
+  await page.getByLabel(/e-mail/i).fill('browser-6@example.test')
+  await page.getByPlaceholder('Digite sua senha', { exact: true }).fill('Browser-test-only-42')
+  await page.getByRole('button', { name: /entrar/i }).click()
+  await expect(page).toHaveURL(/\/app$/)
+  const token = decodeURIComponent((await page.context().cookies()).find(cookie => cookie.name === 'XSRF-TOKEN')?.value ?? '')
+  const { config, slug } = await (await page.request.get('/api/bio/load')).json()
+  const app = { type: 'app-hero', preset: 'instagram', title: 'Siga nossa comunidade no Instagram', cta: 'Conheça nosso perfil', url: 'https://instagram.com/example', action: 'link' }
+  config.sections = [
+    { id: 'compact-apps', layout: 'grid-2', items: ['side', 'center'].map(align => ({ ...app, align, layout: 'compact' })) },
+    { id: 'full-app', items: [{ ...app, layout: 'default', align: 'center' }] },
+    { id: 'condensed-apps', items: ['side', 'center'].map(align => ({ ...app, align, layout: 'condensed' })) },
+  ]
+  expect((await page.request.post('/api/bio/publish', { headers: { 'X-XSRF-TOKEN': token }, data: config })).ok()).toBeTruthy()
+  for (const width of [320, 390, 1440]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto(`/${slug}`)
+    await expect(page.locator('.bio-app-compact')).toHaveCount(2)
+    await expect(page.locator('.bio-app-condensed')).toHaveCount(2)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    for (const card of await page.locator('.bio-app-compact, .bio-app-condensed').all()) {
+      const box = (await card.boundingBox())!
+      for (const child of await card.locator('h3, .bio-app-tile-cta, .bio-app-row-action').all()) {
+        const childBox = (await child.boundingBox())!
+        expect(childBox.x).toBeGreaterThanOrEqual(box.x)
+        expect(childBox.x + childBox.width).toBeLessThanOrEqual(box.x + box.width + 1)
+      }
+    }
+    await page.screenshot({ path: `/tmp/app-layouts-${width}.png`, fullPage: true, animations: 'disabled' })
+  }
+  for (const [radius, expected] of [[0, '0px'], [65, '20.8px'], [100, '999px']] as const) {
+    config.brand.theme.buttonRadius = radius
+    expect((await page.request.post('/api/bio/publish', { headers: { 'X-XSRF-TOKEN': token }, data: config })).ok()).toBeTruthy()
+    await page.reload()
+    await expect(page.locator('.bio-app-card')).toHaveCount(5)
+    for (const card of await page.locator('.bio-app-card').all()) {
+      await expect(card).toHaveCSS('border-radius', radius === 100 ? '28px' : expected)
+    }
+    for (const button of await page.locator('.bio-app-card .bio-btn').all()) {
+      await expect(button).toHaveCSS('border-radius', expected)
+    }
+  }
+
+})

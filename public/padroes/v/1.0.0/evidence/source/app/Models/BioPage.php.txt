@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
+
+/**
+ * Página interna de uma bio: slug, título e JSON (rascunho e publicado).
+ *
+ * @property int $id
+ * @property int $bio_id
+ * @property string $slug
+ * @property string $title
+ * @property string $status
+ * @property array<string, mixed>|null $json_draft
+ * @property array<string, mixed>|null $json_published
+ * @property Carbon|null $updated_at
+ */
+#[Fillable([
+    'bio_id',
+    'slug',
+    'title',
+    'json_draft',
+    'json_published',
+    'status',
+])]
+class BioPage extends Model
+{
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'json_draft' => 'array',
+            'json_published' => 'array',
+        ];
+    }
+
+    /**
+     * Bio dona da página.
+     *
+     * @return BelongsTo<Bio, $this>
+     */
+    public function bio(): BelongsTo
+    {
+        return $this->belongsTo(Bio::class);
+    }
+
+    /**
+     * Resumo serializado para listagens e respostas da API.
+     *
+     * @return array{id: int, slug: string, title: string, status: string, updated_at: string|null}
+     */
+    public function summary(): array
+    {
+        return [
+            'id' => $this->id,
+            'slug' => $this->slug,
+            'title' => $this->title,
+            'status' => $this->status,
+            'updated_at' => $this->updated_at?->toIso8601String(),
+        ];
+    }
+}

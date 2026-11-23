@@ -1,0 +1,65 @@
+/** Máscaras visuais; datas e números continuam sendo enviados no formato da API. */
+export function maskDate(value: string): string {
+  const trimmed = value.trim()
+  const source = /^\d{4}-\d{2}-\d{2}$/.test(trimmed) ? trimmed.split('-').reverse().join('') : value
+  const digits = source.replace(/\D/g, '').slice(0, 8)
+  return [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4)].filter(Boolean).join('/')
+}
+
+function nationalPhone(digits: string): string {
+  if (!digits) return ''
+  const area = digits.slice(0, 2)
+  const local = digits.slice(2, 11)
+  if (!local) return `(${area}`
+  const split = local.length > 8 ? 5 : 4
+  return `(${area}) ${local.slice(0, split)}${local.length > split ? `-${local.slice(split)}` : ''}`
+}
+export function maskPhone(value: string): string {
+  const digits = value.replace(/\D/g, '')
+  const international = value.trimStart().startsWith('+')
+  if (digits.startsWith('55') && (international || digits.length === 12 || digits.length === 13)) {
+    const national = nationalPhone(digits.slice(2))
+    return national ? `+55 ${national}` : '+55'
+  }
+  if (international) return `+${digits.slice(0, 15)}`
+  return nationalPhone(digits)
+}
+export function validPhone(value: string): boolean {
+  if (!value) return true
+  if (value.startsWith('+') && !value.startsWith('+55')) return /^\+[1-9]\d{6,14}$/.test(value)
+  return /^(?:\+55 )?\(\d{2}\) \d{4,5}-\d{4}$/.test(value)
+}
+
+export function maskNumber(value: string): string {
+  const cleaned = value.replace(/[^0-9.,-]/g, '')
+  const sign = cleaned.startsWith('-') ? '-' : ''
+  const unsigned = cleaned.replace(/-/g, '')
+  // Quando ambos aparecem em uma colagem, o último separador é o decimal.
+  const mixed = unsigned.includes('.') && unsigned.includes(',')
+  const separator = mixed ? Math.max(unsigned.lastIndexOf('.'), unsigned.lastIndexOf(',')) : unsigned.search(/[.,]/)
+  if (separator < 0) return sign + unsigned
+  const whole = unsigned.slice(0, separator).replace(/[.,]/g, '') || '0'
+  const fraction = unsigned.slice(separator + 1).replace(/[.,]/g, '')
+  return `${sign}${whole},${fraction}`
+}
+export function numberValue(value: string): string | null {
+  return /^-?\d+(?:,\d+)?$/.test(value) ? value.replace(',', '.') : value === '' ? '' : null
+}
+
+export function caretAfterDigits(value: string, count: number): number {
+  if (!count) return value.startsWith('+') || value.startsWith('(') ? 1 : 0
+  let seen = 0
+  for (let index = 0; index < value.length; index++) if (/\d/.test(value[index]) && ++seen === count) return index + 1
+  return value.length
+}
+
+/** Apagar sobre uma barra, hífen ou parêntese também remove o dígito adjacente. */
+export function maskDeletion(value: string, caret: number, key: string): { value: string; caret: number } | null {
+  const backwards = key === 'Backspace'
+  if (!backwards && key !== 'Delete') return null
+  let index = backwards ? caret - 1 : caret
+  if (index < 0 || index >= value.length || /\d/.test(value[index])) return null
+  while (index >= 0 && index < value.length && !/\d/.test(value[index])) index += backwards ? -1 : 1
+  if (index < 0 || index >= value.length) return null
+  return { value: value.slice(0, index) + value.slice(index + 1), caret: backwards ? index : caret }
+}

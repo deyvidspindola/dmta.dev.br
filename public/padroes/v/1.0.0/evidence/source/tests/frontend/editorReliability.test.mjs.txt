@@ -1,0 +1,76 @@
+import { test, after } from 'node:test'
+import assert from 'node:assert/strict'
+import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { pathToFileURL } from 'node:url'
+import ts from 'typescript'
+const root = mkdtempSync(join(tmpdir(), 'editor-reliability-'))
+async function load(name) {
+  const source = readFileSync(`resources/js/editor/lib/${name}.ts`, 'utf8')
+  const code = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } }).outputText
+  const file = join(root, `${name}.mjs`); writeFileSync(file, code); return import(pathToFileURL(file))
+}
+const { DraftRecoveryStore } = await load('draftRecovery')
+const { EditorConnection, EditorRequestError } = await load('editorConnection')
+after(() => rmSync(root, { recursive: true, force: true }))
+class MemoryStorage {
+  data = new Map()
+  getItem(key) { return this.data.get(key) ?? null }
+  setItem(key, value) { this.data.set(key, value) }
+  removeItem(key) { this.data.delete(key) }
+}
+const config = { brand: { name: 'Meu cliente' }, sections: [{ id: 'grupo', items: [{ type: 'text', text: 'Minha edição' }] }] }
+test('rascunhos são isolados por conta, bio e aba', () => {
+  const storage = new MemoryStorage()
+  const current = new DraftRecoveryStore(storage, 'account:1:bio:1:tab:1')
+  assert.ok(current.write(config, 'revision-one'))
+  assert.deepEqual(current.read().config, config)
+  assert.equal(new DraftRecoveryStore(storage, 'account:2:bio:1:tab:1').read(), null)
+  assert.equal(new DraftRecoveryStore(storage, 'account:1:bio:2:tab:1').read(), null)
+  assert.equal(new DraftRecoveryStore(storage, 'account:1:bio:1:tab:2').read(), null)
+})
+test('confirmar save antigo não apaga a edição feita durante a requisição', () => {
+  const store = new DraftRecoveryStore(new MemoryStorage(), 'current')
+  const next = structuredClone(config); next.brand.name = 'Edição mais nova'
+  store.write(next, 'version'); store.acknowledge(config)
+  assert.equal(store.read().config.brand.name, 'Edição mais nova')
+  store.acknowledge(next); assert.equal(store.read(), null)
+})
+test('storage cheio, rascunho inválido e expiração não quebram o editor', () => {
+  const store = new DraftRecoveryStore({ setItem() { throw new Error('Quota') }, getItem() { return '{invalid' }, removeItem() {} }, 'current')
+  assert.equal(store.write(config, 'version'), false); assert.equal(store.read(), null)
+  const memory = new MemoryStorage(); memory.setItem('old', JSON.stringify({ config, savedAt: Date.now() - 8 * 86400000 }))
+  assert.equal(new DraftRecoveryStore(memory, 'old').read(), null); assert.equal(memory.getItem('old'), null)
+})
+test('somente confirmação do servidor avança a revisão', async () => {
+  const connection = new EditorConnection(); connection.adopt('first')
+  await assert.rejects(connection.write(async () => { throw new TypeError('Offline') }))
+  assert.equal(connection.revision, 'first'); assert.equal(connection.busy, false)
+  await connection.write(async () => ({ revision: 'second' }))
+  assert.equal(connection.revision, 'second')
+})
+test('requisições simultâneas são bloqueadas e conflito pausa novas escritas', async () => {
+  const connection = new EditorConnection(); connection.adopt('first')
+  let release; const request = connection.write(() => new Promise(resolve => { release = resolve }))
+  await assert.rejects(connection.write(async () => ({ revision: 'wrong' })), error => error.status === 425)
+  release({ revision: 'second' }); await request
+  await assert.rejects(connection.write(async () => { throw new EditorRequestError('Conflict', 409, 'editor_conflict') }))
+  assert.equal(connection.revision, 'second'); assert.ok(connection.blocked)
+  await assert.rejects(connection.write(async () => ({ revision: 'wrong' })), error => error.code === 'editor_conflict')
+  connection.adopt('current'); assert.equal(connection.blocked, false)
+})
+const { editorHistoryReducer, emptyHistory, HISTORY_LIMIT } = await load('editorHistory')
+test('histórico mantém commits atômicos, desfaz/refaz e limita memória sem mutar estados anteriores', () => {
+  let state = editorHistoryReducer(emptyHistory, { type: 'reset', config })
+  const originalState = state
+  for (let n = 0; n < HISTORY_LIMIT + 10; n++) state = editorHistoryReducer(state, { type: 'commit', updater: previous => ({ ...previous, brand: { ...previous.brand, name: `Nome ${n}` } }) })
+  assert.equal(state.past.length, HISTORY_LIMIT)
+  assert.equal(originalState.config, config); assert.deepEqual(originalState.past, [])
+  const undo = editorHistoryReducer(state, { type: 'undo' })
+  assert.equal(undo.config.brand.name, `Nome ${HISTORY_LIMIT + 8}`)
+  const redo = editorHistoryReducer(undo, { type: 'redo' })
+  assert.deepEqual(redo.config, state.config)
+  const branching = editorHistoryReducer(undo, { type: 'commit', updater: () => config })
+  assert.deepEqual(branching.future, [])
+})

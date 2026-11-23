@@ -1,0 +1,303 @@
+{
+  "source": "/home/drspindola/projects/links-na-bio",
+  "commit": "e8ff6a884f45104131c336e1df13fc186cb19e83",
+  "workingTreeModified": true,
+  "capturedAt": "2026-11-22",
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "a98311667967a4faaf8c5126ed6686a7167cc9978c7a08350086c6a1567f0917",
+      "lines": 61
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "9ae3fc2c518b16e3cd375e5534288ffde02ee18e619c423e131edd266f8a6f58",
+      "lines": 5951
+    },
+    {
+      "path": "composer.json",
+      "sha256": "6542b48e4b9ce6924f23be7fff0a8bb5ecfc0bd780cec7f960f1f0b82c9a522d",
+      "lines": 90
+    },
+    {
+      "path": "composer.lock",
+      "sha256": "d4e4e3e8ea0faade1e1b0580388d9e8db7551a931c8e6f00f544e893f47ec43a",
+      "lines": 9464
+    },
+    {
+      "path": ".editorconfig",
+      "sha256": "fe39e0ad06edea8e256e44f1fc4f319a8acfa785a7470af5cf6b9ed12dc34406",
+      "lines": 18
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "5ed15f40ef603ec04e58097bc2dca7716dbbc23764f6e238665a83db38e06417",
+      "lines": 24
+    },
+    {
+      "path": "vite.config.js",
+      "sha256": "6180d196cc6b2bb2a93576e5cccaa6981436d45deb5403148026140c0cbf08ac",
+      "lines": 132
+    },
+    {
+      "path": "vite.entries.mjs",
+      "sha256": "cdcbcd4f204b5550842eb84079e74870f511085cd778787fab92e66c3f8be333",
+      "lines": 75
+    },
+    {
+      "path": "resources/js/README.md",
+      "sha256": "e8c57c3bbb6c621396b5f7f29a8a1a1a3bdec991704a57efef252c34ab4bbb02",
+      "lines": 69
+    },
+    {
+      "path": "resources/js/shared/ui/index.tsx",
+      "sha256": "d8bc10bf2c33df45571a73fff2f219dc3eaacab2fa39a573e8df59e656796de1",
+      "lines": 110
+    },
+    {
+      "path": "resources/js/shared/http.ts",
+      "sha256": "d3caa2c46bcfd9dcd769afbddce14210e2b955da862ff6a22dfe47ccb5f2e2bd",
+      "lines": 59
+    },
+    {
+      "path": "resources/js/shared/csrf.ts",
+      "sha256": "dbc7919347901de7d9eebf59ba1673516cd43a6fae373bf12b43a0c8d8e294ef",
+      "lines": 6
+    },
+    {
+      "path": "resources/js/shared/fields/Select.tsx",
+      "sha256": "1f6eacd9eb3ca01ddf00cc95e2cf653a8e2ebd94c2db80445bc84280b8050def",
+      "lines": 34
+    },
+    {
+      "path": "resources/js/shared/fields/SelectControl.tsx",
+      "sha256": "c3b1b12c81660dd10f9864d67283da50dafe0cf8dd8c43810191e56f6de25d01",
+      "lines": 77
+    },
+    {
+      "path": "resources/js/shared/fields/surfaceTokens.ts",
+      "sha256": "91c3502c328b6985e69d3fc288f57b5cc1f14c636064585b2962751f51cbefba",
+      "lines": 8
+    },
+    {
+      "path": "resources/js/shared/fields/fields.css",
+      "sha256": "06faf07e16f84612d1dd423ba381ae0cc963bc1e3fc5dcf0d2d97fb5022e8d07",
+      "lines": 80
+    },
+    {
+      "path": "resources/js/shared/fields/inputMasks.ts",
+      "sha256": "77a853788f73abf145edec404202b7666e3dc6a1702c86282ba5f6b8deafb902",
+      "lines": 65
+    },
+    {
+      "path": "resources/js/shared/brand/BrandWordmark.tsx",
+      "sha256": "b02cf928bb2371960d6b17c76f96fa0b64c7f178c09993d52724f9d1780be1e8",
+      "lines": 4
+    },
+    {
+      "path": "resources/js/shared/brand/wordmark.css",
+      "sha256": "86ff8be1e375dcad95d93894d5e2f5d3599f5cb03e56edb90b42823f95c3a360",
+      "lines": 4
+    },
+    {
+      "path": "resources/js/editor/shell/EditorTopbar.tsx",
+      "sha256": "26971658eddf914617265028a0c7f423041d1038e1ca6fe48e892c3027734e3e",
+      "lines": 196
+    },
+    {
+      "path": "resources/js/editor/shell/EditorRail.tsx",
+      "sha256": "136a6c86d36eea36b11b6a55ea90c9b183a6ad32736f1fe4876e5a98319de144",
+      "lines": 260
+    },
+    {
+      "path": "resources/js/editor/hooks/useIsNarrow.ts",
+      "sha256": "5cddb37a8ec9486a9c7c4859be30abab6a04b1fff03184ec7ad500f205c91da6",
+      "lines": 21
+    },
+    {
+      "path": "resources/js/editor/lib/theme.ts",
+      "sha256": "3cdb3b0e3a47d0f0daf3a9e0b16aabf7e858b0c3bb38e6be300124d3ad3f091c",
+      "lines": 20
+    },
+    {
+      "path": "resources/js/editor/index.css",
+      "sha256": "8ebc47e3b7351f5baf95c3248b3c73134c0bac37f5c6c3f1c4a250f1b4c1b593",
+      "lines": 3390
+    },
+    {
+      "path": "resources/js/admin/components/AdminTopbar.tsx",
+      "sha256": "cac8d300af57898dd0377cfdda6217269c3cb030b21debeba48cd372c0d02379",
+      "lines": 18
+    },
+    {
+      "path": "resources/js/admin/components/AdminRail.tsx",
+      "sha256": "c8f732d82446f786a6f92f1041d218686618d8e175456fdbedc78a023fd75d8e",
+      "lines": 24
+    },
+    {
+      "path": "resources/js/admin/admin.css",
+      "sha256": "ecef011fcf6c65ca20188b45a75826e309da4bb275cd52d6e323f1f0f4e37f6e",
+      "lines": 211
+    },
+    {
+      "path": "resources/js/app/components/AccountForm.tsx",
+      "sha256": "e61a93ceec4c2d81f6617afb994dd95f2b64430267551c99c50d711451ce08a5",
+      "lines": 185
+    },
+    {
+      "path": "resources/js/app/hooks/useAccount.ts",
+      "sha256": "9359335b25aeb6eec8ad63b33e4414d72bf49641510e0932e93d6f3a959395ff",
+      "lines": 118
+    },
+    {
+      "path": "resources/js/site/components/Header.tsx",
+      "sha256": "867133cd568d38082b12cfe0d3dfe3ca445f4502c4355a349f7e224c9551e978",
+      "lines": 22
+    },
+    {
+      "path": "resources/js/site/index.css",
+      "sha256": "4e4eebaa3e51308a4713671606d87f75aea981bbb88283390105e54cc1e8e231",
+      "lines": 645
+    },
+    {
+      "path": "resources/js/bio/lib/fonts.ts",
+      "sha256": "37f79cf44181282bf05ea6808d4c326b5b8b06f1c67634fbf2639e9f16cc4396",
+      "lines": 104
+    },
+    {
+      "path": "resources/views/spa.blade.php",
+      "sha256": "3cba287d82894d4543478e0b1a4fa42fb45f6fae75a36dae21d03e02055bdc22",
+      "lines": 60
+    },
+    {
+      "path": "resources/views/bio.blade.php",
+      "sha256": "0c5fdd6286112a8f0da4a5f6bcc879e2e01777b9682a529d9374b6a2265ef8f1",
+      "lines": 45
+    },
+    {
+      "path": "resources/css/app.css",
+      "sha256": "02db84e827e06d8349293e9797eb8d81465e109e91976775964c4bf873b6fab5",
+      "lines": 9
+    },
+    {
+      "path": "bootstrap/app.php",
+      "sha256": "58404952328cb43d2fe8cf0af08192554f6bffc143440ca72e813c1aaf4f83c8",
+      "lines": 76
+    },
+    {
+      "path": "routes/web.php",
+      "sha256": "c39d2b439b96775def345b2d755ca7c899533ce1810e817acead3751c506eaa8",
+      "lines": 61
+    },
+    {
+      "path": "routes/admin.php",
+      "sha256": "f305d99fcc1aee102e3379b62c288897ff8b2386e45e1001d9dfdb5ab3f0ad1b",
+      "lines": 68
+    },
+    {
+      "path": "routes/bio.php",
+      "sha256": "09e212a4f030d194e19214d3c1efc5d02add0eefa5ec56f1188769a9e7e2fbe4",
+      "lines": 102
+    },
+    {
+      "path": "app/Http/Controllers/Controller.php",
+      "sha256": "fb9ed7fd0880c17fff342f0dcc0551c1bb981fefdac65b3ca7398d813e58acde",
+      "lines": 25
+    },
+    {
+      "path": "app/Http/Controllers/BioPageController.php",
+      "sha256": "158c3069e91c4fd386de368b8e087ace25a3acfb39b85de41da392dfe1769ca1",
+      "lines": 85
+    },
+    {
+      "path": "app/Http/Requests/CreateBioPageRequest.php",
+      "sha256": "fc66b5983695315fa5ec0f2923b6e7dd6e25ad0c2ee472249db59028ab56e448",
+      "lines": 22
+    },
+    {
+      "path": "app/Http/Requests/SaveBioPageRequest.php",
+      "sha256": "b8c7458b8c622ea7ca2062c3e630dceaea4e0e75ad47b282832ed68d53ad1f9e",
+      "lines": 28
+    },
+    {
+      "path": "app/UseCases/BioPage/CreateBioPage.php",
+      "sha256": "9a2c1ab8238a04eb127a91cd5724a463d4b7784735973183eeefffa4f80d24b1",
+      "lines": 54
+    },
+    {
+      "path": "app/Repositories/BioPageRepository.php",
+      "sha256": "e9e231f0c90aa051df93e142333c45b7eb1e34c67720650e8695c7b913968e55",
+      "lines": 79
+    },
+    {
+      "path": "app/Models/BioPage.php",
+      "sha256": "9a169e12ebf011fc41bd9e22e87bf8eacbf14b327f544b5247692097283b8694",
+      "lines": 68
+    },
+    {
+      "path": "app/Services/BioConfigParser.php",
+      "sha256": "c576e7bca3dc218042a09545614a473e83208ee2078ee920a93d8712762bffaa",
+      "lines": 49
+    },
+    {
+      "path": "app/Services/CurrentBioService.php",
+      "sha256": "96854474f1e191a1a574921961f520c6589a9932c4232de4826baa04604edd18",
+      "lines": 111
+    },
+    {
+      "path": "app/Exceptions/ApplicationException.php",
+      "sha256": "9aeb7504920e62b969a8d62a51bade29848ea4df523dfdfbcf6d3e372b648543",
+      "lines": 32
+    },
+    {
+      "path": "phpunit.xml",
+      "sha256": "eb3da6e9724882b6e9f256a835700cbd86759963d24556aee07b0375211ba0be",
+      "lines": 49
+    },
+    {
+      "path": "phpstan.neon",
+      "sha256": "2c905cf9a93dd076e4f10c1d2a855a17ac621925c6823242081614a8033b6240",
+      "lines": 6
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "4261845dcb2e7fe927498fbdea7041a6558b28719829078b1ef82eeead58a0d5",
+      "lines": 9
+    },
+    {
+      "path": "tests/frontend/viteEntries.test.mjs",
+      "sha256": "0e22eab96db1dd2252b8bf21fd8b5a41b650ab0237aa60f916c56db5bb6e40ab",
+      "lines": 28
+    },
+    {
+      "path": "tests/frontend/editorReliability.test.mjs",
+      "sha256": "9cb2ad68d5baf4ccdbc4a3b1afdd3df3a2a5ae0e4b99199f53b78de1e1b2b604",
+      "lines": 76
+    },
+    {
+      "path": "tests/browser/shared-fields.spec.ts",
+      "sha256": "030390d9a73b4e864eaa1763ec280b93f6e4ceb046e93fdafa926e5cce17b668",
+      "lines": 59
+    },
+    {
+      "path": "tests/browser/app-layouts.spec.ts",
+      "sha256": "6280b17d01a2cd18dc7b67a5468818d42deaa8844665bbffaa757a8acc27e426",
+      "lines": 47
+    },
+    {
+      "path": "resources/js/bio/components/icons.tsx",
+      "sha256": "5808caf60e8115cf829f0e220cb26e5e4ab512cc973f666fbfdc0e892ddbbb6b",
+      "lines": 301
+    },
+    {
+      "path": "resources/js/editor/lib/iconCatalog.ts",
+      "sha256": "c91f2b89506dc5b00984ce148072b83c45bed8ac5127f160a4670a23677736da",
+      "lines": 179
+    },
+    {
+      "path": "resources/js/editor/shared/IconPicker.tsx",
+      "sha256": "a42c7099511c91b3854e246dd5436660cbbbe569257c238aef01581308a6fb6c",
+      "lines": 222
+    }
+  ]
+}

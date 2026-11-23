@@ -65,4 +65,11 @@ if [[ -f "$SRC/build/manifest.json" ]]; then
   echo "  build/manifest.json (necessário pro @vite)"
 fi
 
+# Biblioteca estática de padrões (Markdown, JSON e exemplos como texto).
+if [[ -d "$SRC/padroes" ]]; then
+  mkdir -p "$DEST/padroes"
+  cp -R "$SRC/padroes/." "$DEST/padroes/"
+  echo "  padroes/ (biblioteca para IA)"
+fi
+
 echo "Concluído."

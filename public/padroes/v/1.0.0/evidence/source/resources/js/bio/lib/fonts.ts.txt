@@ -1,0 +1,104 @@
+/**
+ * Fontes que o dono da bio pode escolher (Google Fonts, carregadas sob demanda).
+ * Inter já vem no HTML da bio — é o padrão quando nada foi escolhido.
+ */
+export type BioFontCategory = 'sans' | 'serif' | 'display' | 'script'
+
+export interface BioFont {
+  id: string
+  label: string
+  /** Pilha CSS completa. */
+  family: string
+  /** Peso usado no nome (cada fonte fica bonita num peso diferente). */
+  nameWeight: number
+  /** Trecho `family=` do css2 do Google Fonts; null = já carregada. */
+  google: string | null
+  /** Agrupamento no seletor do editor. */
+  category: BioFontCategory
+}
+
+export const BIO_FONT_CATEGORY_LABELS: Record<BioFontCategory, string> = {
+  sans: 'Sans',
+  serif: 'Serif',
+  display: 'Display',
+  script: 'Cursivas / assinatura',
+}
+
+export const BIO_FONTS: BioFont[] = [
+  { id: 'inter', label: 'Inter', family: "'Inter', ui-sans-serif, system-ui, sans-serif", nameWeight: 700, google: null, category: 'sans' },
+  { id: 'outfit', label: 'Outfit', family: "'Outfit', ui-sans-serif, sans-serif", nameWeight: 600, google: 'Outfit:wght@400;500;600;700', category: 'sans' },
+  { id: 'jakarta', label: 'Plus Jakarta', family: "'Plus Jakarta Sans', ui-sans-serif, sans-serif", nameWeight: 800, google: 'Plus+Jakarta+Sans:wght@400;500;700;800', category: 'sans' },
+  { id: 'dm-sans', label: 'DM Sans', family: "'DM Sans', ui-sans-serif, sans-serif", nameWeight: 700, google: 'DM+Sans:wght@400;500;700', category: 'sans' },
+  { id: 'manrope', label: 'Manrope', family: "'Manrope', ui-sans-serif, sans-serif", nameWeight: 700, google: 'Manrope:wght@400;500;700', category: 'sans' },
+  { id: 'sora', label: 'Sora', family: "'Sora', ui-sans-serif, sans-serif", nameWeight: 700, google: 'Sora:wght@400;600;700', category: 'sans' },
+  { id: 'archivo', label: 'Archivo', family: "'Archivo', ui-sans-serif, sans-serif", nameWeight: 800, google: 'Archivo:wght@400;500;800', category: 'sans' },
+  { id: 'space-grotesk', label: 'Space Grotesk', family: "'Space Grotesk', ui-sans-serif, sans-serif", nameWeight: 500, google: 'Space+Grotesk:wght@400;500;700', category: 'sans' },
+
+  { id: 'instrument-serif', label: 'Instrument Serif', family: "'Instrument Serif', Georgia, serif", nameWeight: 400, google: 'Instrument+Serif', category: 'serif' },
+  { id: 'cormorant', label: 'Cormorant', family: "'Cormorant Garamond', Georgia, serif", nameWeight: 600, google: 'Cormorant+Garamond:wght@500;600;700', category: 'serif' },
+  { id: 'bodoni', label: 'Bodoni', family: "'Bodoni Moda', Georgia, serif", nameWeight: 600, google: 'Bodoni+Moda:wght@500;600;700', category: 'serif' },
+  { id: 'dm-serif', label: 'DM Serif', family: "'DM Serif Display', Georgia, serif", nameWeight: 400, google: 'DM+Serif+Display', category: 'serif' },
+  { id: 'playfair', label: 'Playfair', family: "'Playfair Display', Georgia, serif", nameWeight: 700, google: 'Playfair+Display:wght@400;700', category: 'serif' },
+  { id: 'fraunces', label: 'Fraunces', family: "'Fraunces', Georgia, serif", nameWeight: 600, google: 'Fraunces:wght@400;600;700', category: 'serif' },
+
+  { id: 'syne', label: 'Syne', family: "'Syne', ui-sans-serif, sans-serif", nameWeight: 800, google: 'Syne:wght@500;700;800', category: 'display' },
+  { id: 'bricolage', label: 'Bricolage', family: "'Bricolage Grotesque', ui-sans-serif, sans-serif", nameWeight: 800, google: 'Bricolage+Grotesque:wght@400;600;800', category: 'display' },
+  { id: 'unbounded', label: 'Unbounded', family: "'Unbounded', ui-sans-serif, sans-serif", nameWeight: 700, google: 'Unbounded:wght@500;700', category: 'display' },
+
+  // Cursivas / assinatura — ideais para nome e tagline (não para texto corrido).
+  { id: 'pacifico', label: 'Pacifico', family: "'Pacifico', cursive", nameWeight: 400, google: 'Pacifico', category: 'script' },
+  { id: 'great-vibes', label: 'Great Vibes', family: "'Great Vibes', cursive", nameWeight: 400, google: 'Great+Vibes', category: 'script' },
+  { id: 'allura', label: 'Allura', family: "'Allura', cursive", nameWeight: 400, google: 'Allura', category: 'script' },
+  { id: 'sacramento', label: 'Sacramento', family: "'Sacramento', cursive", nameWeight: 400, google: 'Sacramento', category: 'script' },
+  { id: 'alex-brush', label: 'Alex Brush', family: "'Alex Brush', cursive", nameWeight: 400, google: 'Alex+Brush', category: 'script' },
+  { id: 'satisfy', label: 'Satisfy', family: "'Satisfy', cursive", nameWeight: 400, google: 'Satisfy', category: 'script' },
+  { id: 'dancing-script', label: 'Dancing Script', family: "'Dancing Script', cursive", nameWeight: 600, google: 'Dancing+Script:wght@400;500;600;700', category: 'script' },
+  { id: 'caveat', label: 'Caveat', family: "'Caveat', cursive", nameWeight: 600, google: 'Caveat:wght@400;500;600;700', category: 'script' },
+  { id: 'birthstone', label: 'Birthstone', family: "'Birthstone', cursive", nameWeight: 400, google: 'Birthstone', category: 'script' },
+  { id: 'ephesis', label: 'Ephesis', family: "'Ephesis', cursive", nameWeight: 400, google: 'Ephesis', category: 'script' },
+  { id: 'style-script', label: 'Style Script', family: "'Style Script', cursive", nameWeight: 400, google: 'Style+Script', category: 'script' },
+  { id: 'meow-script', label: 'Meow Script', family: "'Meow Script', cursive", nameWeight: 400, google: 'Meow+Script', category: 'script' },
+]
+
+/** Fontes oferecidas para o texto corrido (legíveis em tamanho pequeno). */
+export const BODY_FONT_IDS = ['inter', 'dm-sans', 'manrope', 'jakarta', 'outfit', 'sora', 'fraunces']
+
+const CATEGORY_ORDER: BioFontCategory[] = ['sans', 'serif', 'display', 'script']
+
+/** Fontes agrupadas para `<optgroup>` nos seletores do editor. */
+export function bioFontsByCategory(): Array<{ category: BioFontCategory; label: string; fonts: BioFont[] }> {
+  return CATEGORY_ORDER.map((category) => ({
+    category,
+    label: BIO_FONT_CATEGORY_LABELS[category],
+    fonts: BIO_FONTS.filter((font) => font.category === category),
+  })).filter((group) => group.fonts.length > 0)
+}
+
+export function resolveBioFont(id?: string): BioFont | undefined {
+  if (!id) return undefined
+  return BIO_FONTS.find((font) => font.id === id)
+}
+
+const loaded = new Set<string>()
+
+/** Injeta um <link> do Google Fonts por fonte ainda não carregada nesta página. */
+export function loadBioFonts(ids: Array<string | undefined>): void {
+  if (typeof document === 'undefined') return
+  for (const id of ids) {
+    const font = resolveBioFont(id)
+    if (!font?.google || loaded.has(font.id)) continue
+    loaded.add(font.id)
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = `https://fonts.googleapis.com/css2?family=${font.google}&display=swap`
+    link.dataset.bioFont = font.id
+    document.head.appendChild(link)
+  }
+}
+
+/** Reseta o cache de fontes injetadas — use em afterEach de testes de browser/jsdom. */
+export function resetLoadedBioFonts(): void {
+  loaded.clear()
+  if (typeof document === 'undefined') return
+  document.head.querySelectorAll('link[data-bio-font]').forEach(node => node.remove())
+}

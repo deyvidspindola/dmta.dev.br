@@ -1,0 +1,14 @@
+M package-lock.json
+ M resources/js/editor/shell/EditorTopbar.tsx
+?? output/
+?? public/images/homepaper/
+?? public/images/igreja-horizonte-da-graca/
+?? public/images/papel-e-afeto/caderno.jpg
+?? public/images/papel-e-afeto/canetas.jpg
+?? public/images/papel-e-afeto/capa.jpg
+?? public/images/papel-e-afeto/kit.jpg
+?? public/images/papel-e-afeto/logo-transparente.png
+?? public/images/papel-e-afeto/mesa-criativa.jpg
+?? public/images/papel-e-afeto/planner.jpg
+?? public/images/papel-e-afeto/presente-afeto.jpg
+?? storage/backups/

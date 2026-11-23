@@ -1,0 +1,179 @@
+import type { IconName } from '@bio-types'
+
+export type IconCategory =
+  | 'all'
+  | 'contact'
+  | 'social'
+  | 'faith'
+  | 'giving'
+  | 'community'
+  | 'events'
+  | 'media'
+  | 'general'
+
+export interface IconCatalogEntry {
+  id: IconName
+  label: string
+  category: Exclude<IconCategory, 'all'>
+  keywords?: string[]
+}
+
+export const ICON_CATEGORY_LABELS: Record<IconCategory, string> = {
+  all: 'Todos',
+  contact: 'Contato',
+  social: 'Redes',
+  faith: 'Fé e culto',
+  giving: 'Negócios e recursos',
+  community: 'Comunidade',
+  events: 'Eventos',
+  media: 'Mídia',
+  general: 'Geral',
+}
+
+export const ICON_CATALOG: IconCatalogEntry[] = [
+  // Trabalho, saúde, serviços e interesses pessoais
+  { id: 'clipboard-check', label: 'Prancheta / Avaliação', category: 'general', keywords: ['tarefas', 'checklist', 'avaliacao', 'consulta'] },
+  { id: 'notebook-pen', label: 'Caderno / Planejamento', category: 'general', keywords: ['anotacoes', 'escrever', 'plano'] },
+  { id: 'leaf', label: 'Folha / Natureza', category: 'general', keywords: ['natureza', 'eco', 'sustentabilidade', 'nutricao'] },
+  { id: 'heart-handshake', label: 'Coração / Apoio', category: 'general', keywords: ['acolhimento', 'cuidado', 'terapia', 'ajuda'] },
+  { id: 'target', label: 'Alvo / Metas', category: 'general', keywords: ['foco', 'objetivo', 'estrategia'] },
+  { id: 'brain', label: 'Cérebro / Saúde mental', category: 'general', keywords: ['psicologia', 'mente', 'terapia', 'cerebro'] },
+  { id: 'laptop', label: 'Computador / Tecnologia', category: 'general', keywords: ['informatica', 'programacao', 'digital'] },
+  { id: 'stethoscope', label: 'Estetoscópio / Saúde', category: 'general', keywords: ['medico', 'clinica', 'consulta'] },
+  { id: 'rocket', label: 'Foguete / Crescimento', category: 'general', keywords: ['startup', 'lancamento', 'empreendedorismo'] },
+  { id: 'lightbulb', label: 'Lâmpada / Ideias', category: 'general', keywords: ['criatividade', 'inovacao', 'ideia'] },
+  { id: 'paw-print', label: 'Pata / Animais', category: 'general', keywords: ['pet', 'veterinario', 'cachorro', 'gato'] },
+  { id: 'briefcase', label: 'Trabalho / Serviços', category: 'giving', keywords: ['negocios', 'profissional', 'portfolio'] },
+  { id: 'tag', label: 'Etiqueta', category: 'giving', keywords: ['preco', 'produto', 'oferta'] },
+  { id: 'percent', label: 'Desconto', category: 'giving', keywords: ['promocao', 'oferta', 'porcentagem'] },
+  { id: 'scissors', label: 'Tesoura', category: 'general', keywords: ['beleza', 'salao', 'cabelo', 'artesanato'] },
+  { id: 'dumbbell', label: 'Haltere', category: 'general', keywords: ['academia', 'fitness', 'treino', 'esporte'] },
+  { id: 'zap', label: 'Raio / Energia', category: 'general', keywords: ['rapido', 'eletricidade'] },
+  { id: 'linkedin', label: 'LinkedIn', category: 'social', keywords: ['carreira', 'profissional'] },
+  { id: 'github', label: 'GitHub', category: 'social', keywords: ['codigo', 'programacao'] },
+  { id: 'x', label: 'X / Twitter', category: 'social', keywords: ['twitter'] },
+
+  // Ícones do MyChurch
+  { id: 'bible', label: 'Bíblia', category: 'faith', keywords: ['escrituras', 'estudo biblico', 'palavra'] },
+  { id: 'communion', label: 'Santa Ceia', category: 'faith', keywords: ['calice', 'comunhao', 'vinho'] },
+  { id: 'wheat', label: 'Pão / Colheita', category: 'faith', keywords: ['ceia', 'semeadura'] },
+  { id: 'dove', label: 'Pomba / Paz', category: 'faith', keywords: ['espirito santo', 'paz'] },
+  { id: 'worship', label: 'Louvor / Adoração', category: 'faith', keywords: ['adoracao', 'musica', 'culto'] },
+  { id: 'family', label: 'Família', category: 'community', keywords: ['familia', 'casais', 'lar'] },
+  { id: 'children', label: 'Ministério infantil', category: 'community', keywords: ['criancas', 'kids', 'infantil'] },
+  { id: 'youth', label: 'Jovens / Caminhada', category: 'community', keywords: ['juventude', 'adolescentes', 'jovens'] },
+  { id: 'small-group', label: 'Pequenos grupos', category: 'community', keywords: ['celula', 'grupo', 'comunidade'] },
+  { id: 'welcome', label: 'Boas-vindas', category: 'community', keywords: ['visitante', 'recepcao', 'novo'] },
+  { id: 'missions', label: 'Missões', category: 'community', keywords: ['missoes', 'evangelismo', 'missionario'] },
+  { id: 'counseling', label: 'Aconselhamento pastoral', category: 'community', keywords: ['pastor', 'escuta', 'aconselhamento'] },
+  { id: 'care', label: 'Acolhimento / Cuidado', category: 'community', keywords: ['apoio', 'acolhimento', 'ajuda'] },
+  { id: 'food-donation', label: 'Ação social / Alimentos', category: 'giving', keywords: ['cesta basica', 'solidariedade', 'doacao'] },
+  { id: 'accessibility', label: 'Acessibilidade', category: 'community', keywords: ['inclusao', 'acessivel'] },
+  { id: 'study', label: 'Escola bíblica', category: 'faith', keywords: ['ebd', 'ensino', 'estudo', 'discipulado'] },
+
+  // Contato
+  { id: 'whatsapp', label: 'WhatsApp', category: 'contact', keywords: ['zap', 'mensagem'] },
+  { id: 'phone', label: 'Telefone', category: 'contact', keywords: ['ligar', 'celular'] },
+  { id: 'mail', label: 'E-mail', category: 'contact', keywords: ['email', 'correio'] },
+  { id: 'message', label: 'Mensagem', category: 'contact', keywords: ['chat', 'sms'] },
+  { id: 'send', label: 'Enviar', category: 'contact', keywords: ['enviar', 'paper plane'] },
+  { id: 'telegram', label: 'Telegram', category: 'contact' },
+
+  // Redes
+  { id: 'instagram', label: 'Instagram', category: 'social' },
+  { id: 'youtube', label: 'YouTube', category: 'social', keywords: ['video', 'play'] },
+  { id: 'tiktok', label: 'TikTok', category: 'social' },
+  { id: 'facebook', label: 'Facebook', category: 'social' },
+  { id: 'spotify', label: 'Spotify', category: 'social', keywords: ['musica'] },
+  { id: 'share', label: 'Compartilhar', category: 'social' },
+  { id: 'link', label: 'Link', category: 'social', keywords: ['url'] },
+  { id: 'globe', label: 'Site / Web', category: 'social', keywords: ['internet', 'www'] },
+  { id: 'megaphone', label: 'Avisos', category: 'social', keywords: ['anuncio', 'comunicados'] },
+
+  // Fé
+  { id: 'church', label: 'Igreja', category: 'faith', keywords: ['templo'] },
+  { id: 'pray', label: 'Oração', category: 'faith', keywords: ['oracao', 'igreja'] },
+  { id: 'cross', label: 'Cruz', category: 'faith', keywords: ['cristo', 'fe'] },
+  { id: 'book', label: 'Livro / Leitura', category: 'general', keywords: ['biblia', 'leitura'] },
+  { id: 'droplets', label: 'Água / Batismo', category: 'faith', keywords: ['batismo', 'agua'] },
+  { id: 'hand-heart', label: 'Voluntariado', category: 'faith', keywords: ['doar', 'ajuda'] },
+  { id: 'heart', label: 'Coração', category: 'general', keywords: ['amor'] },
+  { id: 'sparkles', label: 'Brilho', category: 'general', keywords: ['destaque'] },
+
+  // Contribuições e recursos
+  { id: 'cart', label: 'Carrinho', category: 'giving', keywords: ['loja', 'compra'] },
+  { id: 'store', label: 'Loja', category: 'giving', keywords: ['shop'] },
+  { id: 'card', label: 'Cartão', category: 'giving', keywords: ['pagamento', 'pix'] },
+  { id: 'wallet', label: 'Carteira / Finanças', category: 'giving', keywords: ['dinheiro'] },
+  { id: 'building', label: 'Prédio / Empresa', category: 'giving', keywords: ['templo', 'unidade'] },
+  { id: 'handshake', label: 'Parceria', category: 'giving', keywords: ['acordo'] },
+  { id: 'file', label: 'Documento', category: 'giving', keywords: ['pdf', 'arquivo'] },
+  { id: 'form', label: 'Formulário', category: 'giving', keywords: ['inscricao'] },
+  { id: 'lock', label: 'Cadeado', category: 'giving', keywords: ['seguro', 'privado'] },
+
+  // Eventos
+  { id: 'calendar', label: 'Calendário', category: 'events', keywords: ['data', 'agenda'] },
+  { id: 'clock', label: 'Relógio', category: 'events', keywords: ['hora', 'horario'] },
+  { id: 'ticket', label: 'Ingresso', category: 'events', keywords: ['evento'] },
+  { id: 'map-pin', label: 'Localização', category: 'events', keywords: ['mapa', 'endereco'] },
+  { id: 'compass', label: 'Bússola', category: 'events', keywords: ['direcao'] },
+  { id: 'users', label: 'Pessoas / Grupo', category: 'events', keywords: ['comunidade'] },
+  { id: 'baby', label: 'Bebê / Kids', category: 'events', keywords: ['crianca'] },
+  { id: 'party', label: 'Festa', category: 'events', keywords: ['celebracao'] },
+  { id: 'cake', label: 'Bolo', category: 'events', keywords: ['aniversario'] },
+  { id: 'plane', label: 'Avião', category: 'events', keywords: ['viagem'] },
+  { id: 'car', label: 'Carro', category: 'events', keywords: ['transporte'] },
+
+  // Mídia
+  { id: 'camera', label: 'Câmera', category: 'media', keywords: ['foto'] },
+  { id: 'image', label: 'Imagem', category: 'media', keywords: ['foto', 'galeria'] },
+  { id: 'video', label: 'Vídeo', category: 'media' },
+  { id: 'music', label: 'Música', category: 'media' },
+  { id: 'mic', label: 'Microfone / Podcast', category: 'media', keywords: ['podcast'] },
+  { id: 'headphones', label: 'Fone / Áudio', category: 'media' },
+  { id: 'newspaper', label: 'Notícia', category: 'media', keywords: ['blog'] },
+  { id: 'palette', label: 'Paleta', category: 'media', keywords: ['arte', 'design'] },
+
+  // Geral
+  { id: 'home', label: 'Casa / Início', category: 'general' },
+  { id: 'star', label: 'Estrela', category: 'general', keywords: ['favorito'] },
+  { id: 'gift', label: 'Presente', category: 'general' },
+  { id: 'coffee', label: 'Café', category: 'general' },
+  { id: 'utensils', label: 'Refeições / Restaurante', category: 'general', keywords: ['alimento', 'comunhao'] },
+  { id: 'flame', label: 'Chama', category: 'general', keywords: ['fogo', 'quente'] },
+  { id: 'sun', label: 'Sol', category: 'general' },
+  { id: 'moon', label: 'Lua', category: 'general' },
+  { id: 'check', label: 'Check', category: 'general', keywords: ['ok', 'feito'] },
+  { id: 'info', label: 'Info', category: 'general', keywords: ['ajuda'] },
+  { id: 'bell', label: 'Sino', category: 'general', keywords: ['alerta', 'notificacao'] },
+  { id: 'bookmark', label: 'Marcador', category: 'general', keywords: ['salvar'] },
+  { id: 'thumbs-up', label: 'Curtir', category: 'general', keywords: ['like'] },
+  { id: 'smile', label: 'Sorriso', category: 'general', keywords: ['emoji'] },
+  { id: 'graduation', label: 'Cursos / Educação', category: 'general', keywords: ['estudo', 'curso'] },
+  { id: 'shirt', label: 'Camiseta', category: 'general', keywords: ['roupa'] },
+  { id: 'download', label: 'Download', category: 'general', keywords: ['baixar'] },
+  { id: 'external', label: 'Link externo', category: 'general', keywords: ['abrir'] },
+
+]
+
+export const ICON_OPTIONS: IconName[] = ICON_CATALOG.map((entry) => entry.id)
+
+export const ICON_LABELS: Partial<Record<IconName, string>> = Object.fromEntries(
+  ICON_CATALOG.map((entry) => [entry.id, entry.label]),
+) as Partial<Record<IconName, string>>
+
+export function filterIconCatalog(
+  query: string,
+  category: IconCategory,
+): IconCatalogEntry[] {
+  const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  const q = normalize(query.trim())
+  return ICON_CATALOG.filter((entry) => {
+    if (category !== 'all' && entry.category !== category) return false
+    if (!q) return true
+    const haystack = [entry.id, entry.label, ...(entry.keywords ?? [])]
+      .join(' ')
+      .toLowerCase()
+    return normalize(haystack).includes(q)
+  })
+}

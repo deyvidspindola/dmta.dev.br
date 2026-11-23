@@ -1,0 +1,24 @@
+import { BRAND_LOGO_URL } from '../../editor/lib/brand'
+import { useState } from 'react'
+import { Settings, Users, TicketPercent, LayoutTemplate, FileText, ChevronDown, Menu, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+export type AdminTab = 'bios' | 'templates' | 'cupons' | 'configuracoes' | 'ai-kit'
+const tabs = [
+  { id: 'bios', label: 'Clientes', Icon: Users },
+  { id: 'templates', label: 'Modelos', Icon: LayoutTemplate },
+  { id: 'cupons', label: 'Cupons', Icon: TicketPercent },
+  { id: 'configuracoes', label: 'Configurações', Icon: Settings },
+  { id: 'ai-kit', label: 'Kit para IA', Icon: FileText },
+] as const
+export function AdminRail({ activeTab, onSelectTab }: { activeTab: AdminTab; onSelectTab: (tab: AdminTab) => void }) {
+  const [expanded, setExpanded] = useState(true)
+  const [open, setOpen] = useState(false)
+  const active = tabs.find(tab => tab.id === activeTab) ?? tabs[0]
+  return <nav className="admin-nav" aria-label="Navegação admin" data-open={open} data-expanded={expanded}>
+    <div className="admin-sidebar-heading">
+      {expanded && <div className="admin-sidebar-brand"><img src={BRAND_LOGO_URL} alt="" /><span>Menu</span></div>}
+      <button type="button" aria-label={expanded ? 'Recolher menu' : 'Expandir menu'} title={expanded ? 'Recolher menu' : 'Expandir menu'} onClick={() => setExpanded(!expanded)}>{expanded ? <PanelLeftClose size={20} /> : <PanelLeftOpen size={20} />}</button>
+    </div>
+    <button type="button" className="admin-menu-toggle" aria-label={open ? 'Fechar menu administrativo' : 'Abrir menu administrativo'} aria-expanded={open} aria-controls="admin-nav-items" onClick={() => setOpen(!open)}><active.Icon size={18} /><span>{active.label}</span><span className="admin-menu-caption"><Menu size={16} />Menu<ChevronDown size={16} className={open ? 'rotate-180' : ''} /></span></button>
+    <div id="admin-nav-items" className="admin-nav-list">{tabs.map(({ id, label, Icon }) => <button key={id} type="button" aria-label={label} title={label} aria-current={activeTab === id ? 'page' : undefined} onClick={() => { onSelectTab(id); setOpen(false) }}><Icon size={20} /><span className="admin-sidebar-label">{label}</span></button>)}</div>
+  </nav>
+}

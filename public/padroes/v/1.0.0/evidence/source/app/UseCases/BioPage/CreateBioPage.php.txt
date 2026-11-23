@@ -1,0 +1,54 @@
+<?php
+
+namespace App\UseCases\BioPage;
+
+use App\Exceptions\ApplicationException;
+use App\Models\User;
+use App\Repositories\BioPageRepository;
+use App\Services\CurrentBioService;
+use App\Services\SlugService;
+
+/**
+ * Cria uma página interna em rascunho, vazia.
+ */
+final class CreateBioPage
+{
+    public function __construct(
+        private CurrentBioService $currentBio,
+        private SlugService $slugs,
+        private BioPageRepository $pages,
+    ) {}
+
+    /**
+     * @return array{id: int, slug: string, title: string, status: string, updated_at: string|null}
+     */
+    public function execute(User $user, string $title, ?string $slugInput = null): array
+    {
+        $bio = $this->currentBio->requireActive($user);
+
+        $title = trim($title);
+        if ($title === '') {
+            throw new ApplicationException('Informe o título da página.', 422);
+        }
+
+        $slug = $this->slugs->normalize(
+            $slugInput !== null && trim($slugInput) !== '' ? $slugInput : $title
+        );
+        $error = $this->slugs->validate($slug);
+        if ($error !== null) {
+            throw new ApplicationException($error, 422);
+        }
+        if ($this->pages->findBySlug($bio, $slug) !== null) {
+            throw new ApplicationException('Este slug de página já está em uso.', 422);
+        }
+
+        $page = $this->pages->create($bio, [
+            'slug' => $slug,
+            'title' => $title,
+            'json_draft' => ['sections' => []],
+            'status' => 'draft',
+        ]);
+
+        return $page->summary();
+    }
+}

@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\CreateBioPageRequest;
+use App\Http\Requests\SaveBioPageRequest;
+use App\Services\BioConfigParser;
+use App\UseCases\BioPage\CreateBioPage;
+use App\UseCases\BioPage\DeleteBioPage;
+use App\UseCases\BioPage\ListBioPages;
+use App\UseCases\BioPage\PublishBioPage;
+use App\UseCases\BioPage\SaveBioPageDraft;
+use App\UseCases\BioPage\ShowBioPageDraft;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+/**
+ * API das páginas internas da bio: listagem, criação, rascunho, publicação e exclusão.
+ */
+class BioPageController extends Controller
+{
+    /**
+     * Lista as páginas da bio.
+     */
+    public function index(Request $request, ListBioPages $useCase): JsonResponse
+    {
+        return response()->json(['pages' => $useCase->execute($this->actor($request))]);
+    }
+
+    /**
+     * Rascunho de uma página para edição.
+     */
+    public function show(Request $request, string $pageSlug, ShowBioPageDraft $useCase): JsonResponse
+    {
+        return response()->json($useCase->execute($this->actor($request), $pageSlug));
+    }
+
+    /**
+     * Cria uma página em rascunho.
+     */
+    public function store(CreateBioPageRequest $request, CreateBioPage $useCase): JsonResponse
+    {
+        $page = $useCase->execute(
+            $this->actor($request),
+            (string) $request->validated('title'),
+            $request->validated('slug'),
+        );
+
+        return response()->json(['page' => $page], 201);
+    }
+
+    /**
+     * Salva o rascunho da página.
+     */
+    public function update(
+        SaveBioPageRequest $request,
+        string $pageSlug,
+        SaveBioPageDraft $useCase,
+        BioConfigParser $parser,
+    ): JsonResponse {
+        $useCase->execute($this->actor($request), $pageSlug, $request->config($parser));
+
+        return response()->json(['ok' => true]);
+    }
+
+    /**
+     * Publica o rascunho da página.
+     */
+    public function publish(Request $request, string $pageSlug, PublishBioPage $useCase): JsonResponse
+    {
+        $useCase->execute($this->actor($request), $pageSlug);
+
+        return response()->json(['ok' => true]);
+    }
+
+    /**
+     * Remove a página.
+     */
+    public function destroy(Request $request, string $pageSlug, DeleteBioPage $useCase): JsonResponse
+    {
+        $useCase->execute($this->actor($request), $pageSlug);
+
+        return response()->json(['ok' => true]);
+    }
+}

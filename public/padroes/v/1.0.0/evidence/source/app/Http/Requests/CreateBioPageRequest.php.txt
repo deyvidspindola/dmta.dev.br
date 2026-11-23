@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * Dados para criar uma página interna.
+ */
+class CreateBioPageRequest extends FormRequest
+{
+    /**
+     * @return array<string, mixed>
+     */
+    public function rules(): array
+    {
+        return [
+            'title' => ['required', 'string', 'max:120'],
+            'slug' => ['nullable', 'string', 'max:80'],
+        ];
+    }
+}

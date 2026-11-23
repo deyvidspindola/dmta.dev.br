@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Models\Bio;
+use App\Models\BioPage;
+use App\Services\Billing\FreePlanConfig;
+use Illuminate\Support\Collection;
+
+/**
+ * Persistência de páginas internas. Controllers e use cases não consultam Eloquent direto.
+ */
+class BioPageRepository
+{
+    public function adaptToFree(BioPage $page, FreePlanConfig $free): void
+    {
+        $page->update([
+            'json_draft' => is_array($page->json_draft) ? $free->adapt($page->json_draft) : null,
+            'json_published' => is_array($page->json_published) ? $free->adapt($page->json_published) : null,
+        ]);
+    }
+
+    /**
+     * Páginas da bio, da mais recente para a mais antiga.
+     *
+     * @return Collection<int, BioPage>
+     */
+    public function listForBio(Bio $bio): Collection
+    {
+        return $bio->pages()->orderByDesc('id')->get();
+    }
+
+    /**
+     * Localiza uma página pelo slug dentro da bio.
+     */
+    public function findBySlug(Bio $bio, string $slug): ?BioPage
+    {
+        return $bio->pages()->where('slug', $slug)->first();
+    }
+
+    /**
+     * Cria a página da bio.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    public function create(Bio $bio, array $attributes): BioPage
+    {
+        return $bio->pages()->create($attributes);
+    }
+
+    /**
+     * Persiste o rascunho da página.
+     *
+     * @param  array<string, mixed>  $config
+     */
+    public function updateDraft(BioPage $page, array $config): void
+    {
+        $page->update(['json_draft' => $config]);
+    }
+
+    /**
+     * Copia o rascunho para o publicado e marca a página como publicada.
+     */
+    public function publish(BioPage $page): void
+    {
+        $page->update([
+            'json_published' => $page->json_draft,
+            'status' => 'published',
+        ]);
+    }
+
+    /**
+     * Remove a página.
+     */
+    public function delete(BioPage $page): void
+    {
+        $page->delete();
+    }
+}

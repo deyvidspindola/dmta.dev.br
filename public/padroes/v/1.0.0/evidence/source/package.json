@@ -1,0 +1,61 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build && vite build --config vite.config.embed.js",
+        "build:embed": "vite build --config vite.config.embed.js",
+        "dev": "vite",
+        "dev:editor": "VITE_APP=editor,bio vite",
+        "dev:bio": "VITE_APP=bio vite",
+        "dev:admin": "VITE_APP=admin vite",
+        "dev:site": "VITE_APP=site vite",
+        "test:themes": "node tests/frontend/themeGallery.test.mjs",
+        "test:vite": "node tests/frontend/viteEntries.test.mjs",
+        "typecheck": "tsc --noEmit",
+        "test:editor": "node tests/frontend/editorReliability.test.mjs",
+        "test:browser": "playwright test",
+        "schema:bio": "node scripts/generate-bio-schema.mjs"
+    },
+    "dependencies": {
+        "@tiptap/extension-character-count": "^3.31.4",
+        "@tiptap/extension-text-align": "^3.31.4",
+        "@tiptap/extension-text-style": "^3.31.4",
+        "@tiptap/pm": "^3.31.4",
+        "@tiptap/react": "^3.31.4",
+        "@tiptap/starter-kit": "^3.31.4",
+        "chart.js": "^4.5.1",
+        "clsx": "^2.1.1",
+        "exceljs": "^4.4.0",
+        "jspdf": "^4.2.1",
+        "jspdf-autotable": "^5.0.9",
+        "leaflet": "^1.9.4",
+        "lucide-react": "^1.23.0",
+        "react": "^19.2.7",
+        "react-chartjs-2": "^5.3.1",
+        "react-dom": "^19.2.7"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.63.0",
+        "@tailwindcss/vite": "^4.0.0",
+        "@types/leaflet": "^1.9.21",
+        "@types/react": "^19.2.17",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^6.2.1",
+        "concurrently": "^10.0.3",
+        "laravel-vite-plugin": "^3.1",
+        "tailwindcss": "^4.0.0",
+        "typescript": "~5.7.0",
+        "vite": "^8.0.0"
+    },
+    "optionalDependencies": {
+        "@laravel/multiplex": "^0.4.1"
+    },
+    "overrides": {
+        "concurrently": {
+            "shell-quote": "^1.11.0"
+        },
+        "exceljs": {
+            "uuid": "^11.1.1"
+        }
+    }
+}

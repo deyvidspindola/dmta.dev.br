@@ -1,0 +1,118 @@
+import { type FormEvent, useEffect, useState } from 'react'
+import { userApi, type UserAccount } from '../application/userApi'
+
+/**
+ * Gerencia os estados e ações do formulário de conta (e-mail e senha).
+ */
+export function useAccount() {
+  const [account, setAccount] = useState<UserAccount | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  // E-mail
+  const [newEmail, setNewEmail] = useState('')
+  const [confirmEmail, setConfirmEmail] = useState('')
+  const [emailMessage, setEmailMessage] = useState<string | null>(null)
+  const [emailError, setEmailError] = useState<string | null>(null)
+  const [emailPending, setEmailPending] = useState(false)
+
+  // Senha
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [passwordMessage, setPasswordMessage] = useState<string | null>(null)
+  const [passwordError, setPasswordError] = useState<string | null>(null)
+  const [passwordPending, setPasswordPending] = useState(false)
+
+  useEffect(() => {
+    void userApi.me().then((user) => {
+      setAccount(user)
+      setLoading(false)
+    })
+  }, [])
+
+  async function submitEmail(e: FormEvent) {
+    e.preventDefault()
+    setEmailError(null)
+    setEmailMessage(null)
+
+    if (newEmail !== confirmEmail) {
+      setEmailError('Os e-mails não conferem.')
+      return
+    }
+
+    setEmailPending(true)
+    try {
+      const result = await userApi.updateEmail(newEmail, confirmEmail)
+      if (!result.ok) {
+        setEmailError(result.error ?? 'Erro ao alterar e-mail.')
+        return
+      }
+      setEmailMessage('E-mail alterado. Verifique sua caixa de entrada para confirmar.')
+      setNewEmail('')
+      setConfirmEmail('')
+      if (result.user) setAccount((prev) => (prev ? { ...prev, email: result.user!.email } : prev))
+    } catch (err) {
+      setEmailError(err instanceof Error ? err.message : 'Erro ao alterar e-mail.')
+    } finally {
+      setEmailPending(false)
+    }
+  }
+
+  async function submitPassword(e: FormEvent) {
+    e.preventDefault()
+    setPasswordError(null)
+    setPasswordMessage(null)
+    if (newPassword !== confirmPassword) {
+      setPasswordError('A confirmação de senha não confere.')
+      return
+    }
+    setPasswordPending(true)
+    try {
+      const result = await userApi.updatePassword(
+        newPassword,
+        confirmPassword,
+        account?.has_password ? currentPassword : undefined,
+      )
+      if (!result.ok) {
+        setPasswordError(result.error ?? 'Erro ao alterar senha.')
+        return
+      }
+      setPasswordMessage(
+        account?.has_password ? 'Senha alterada com sucesso.' : 'Senha definida com sucesso.',
+      )
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      setAccount((prev) => (prev ? { ...prev, has_password: true } : prev))
+    } catch (err) {
+      setPasswordError(err instanceof Error ? err.message : 'Erro ao alterar senha.')
+    } finally {
+      setPasswordPending(false)
+    }
+  }
+
+  return {
+    account,
+    loading,
+    // e-mail
+    newEmail,
+    setNewEmail,
+    confirmEmail,
+    setConfirmEmail,
+    emailMessage,
+    emailError,
+    emailPending,
+    submitEmail,
+    // senha
+    currentPassword,
+    setCurrentPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
+    passwordMessage,
+    passwordError,
+    passwordPending,
+    submitPassword,
+  }
+}

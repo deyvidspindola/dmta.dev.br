@@ -1,0 +1,34 @@
+import { useLayoutEffect, useRef, useState, type SelectHTMLAttributes } from 'react'
+import { SelectControl } from './SelectControl'
+
+/** Adapter mantém os handlers, options dinâmicos e FormData dos selects existentes. */
+export function Select({ children, className, style, id, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
+  const native = useRef<HTMLSelectElement>(null)
+  const wrapper = useRef<HTMLSpanElement>(null)
+  const [options, setOptions] = useState<Array<{ value: string; label: string; disabled: boolean }>>([])
+  const [label, setLabel] = useState(props['aria-label'] ?? 'Selecionar opção')
+  const [uncontrolled, setUncontrolled] = useState(String(props.defaultValue ?? ''))
+  useLayoutEffect(() => {
+    const select = native.current
+    if (!select) return
+    setOptions(Array.from(select.options, option => ({ value: option.value, label: option.label, disabled: option.disabled || (option.parentElement instanceof HTMLOptGroupElement && option.parentElement.disabled) })))
+    if (props.value === undefined) setUncontrolled(select.value)
+    if (props['aria-label']) { setLabel(props['aria-label']); return }
+    const source = wrapper.current?.closest('label') ?? wrapper.current?.parentElement?.querySelector('label')
+    if (source) {
+      const copy = source.cloneNode(true) as HTMLElement
+      copy.querySelectorAll('select,button,input,textarea').forEach(el => el.remove())
+      setLabel(copy.textContent?.trim() || 'Selecionar opção')
+    }
+  }, [children, props['aria-label']])
+  return <span ref={wrapper} style={{ display: 'contents' }}>
+    <select {...props} ref={native} hidden aria-hidden="true" tabIndex={-1}>{children}</select>
+    <SelectControl id={id} label={label} value={String(props.value ?? uncontrolled)} options={options} disabled={props.disabled} className={className} style={style} onChange={value => {
+      const select = native.current
+      if (!select) return
+      select.value = value
+      setUncontrolled(value)
+      select.dispatchEvent(new Event('change', { bubbles: true }))
+    }} />
+  </span>
+}

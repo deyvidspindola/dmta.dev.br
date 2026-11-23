@@ -1,0 +1,8 @@
+import type { CSSProperties } from 'react'
+
+/** Portais de campos mantêm as cores da superfície em que o controle está inserido. */
+export function surfaceTokens(element: Element | null): CSSProperties {
+  if (!element) return {}
+  const style = getComputedStyle(element)
+  return Object.fromEntries(['--color-background', '--color-card', '--color-foreground', '--color-muted-foreground', '--color-border', '--color-primary', '--color-muted'].map(name => [name, style.getPropertyValue(name)])) as CSSProperties
+}

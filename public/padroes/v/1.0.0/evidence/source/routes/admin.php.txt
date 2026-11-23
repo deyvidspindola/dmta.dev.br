@@ -1,0 +1,68 @@
+<?php
+
+use App\Http\Controllers\AdminAiKitController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminCouponController;
+use App\Http\Controllers\AdminSettingsController;
+use App\Http\Controllers\AdminTemplateController;
+use App\Http\Controllers\TemplateMediaController;
+use App\Http\Middleware\ProtectEditorRevision;
+use App\Services\Billing\BillingMonitor;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::get('/api/admin/ai-kit/{file}', [AdminAiKitController::class, 'download']);
+    Route::get('/api/admin/templates', [AdminTemplateController::class, 'index']);
+    Route::post('/api/admin/templates', [AdminTemplateController::class, 'store']);
+    Route::patch('/api/admin/templates/{template}', [AdminTemplateController::class, 'update']);
+    Route::delete('/api/admin/templates/{template}', [AdminTemplateController::class, 'destroy']);
+    Route::get('/admin/templates/{template}/preview', [AdminTemplateController::class, 'preview']);
+    Route::get('/admin/templates/{template}/editor', [AdminTemplateController::class, 'editor']);
+    Route::get('/api/admin/templates/{template}/session', [AdminTemplateController::class, 'session']);
+    Route::get('/api/admin/templates/{template}/load', [AdminTemplateController::class, 'load'])->middleware(ProtectEditorRevision::class);
+    Route::get('/api/admin/templates/{template}/paths', [AdminTemplateController::class, 'paths']);
+    Route::post('/api/admin/templates/{template}/save', [AdminTemplateController::class, 'save'])->middleware(ProtectEditorRevision::class);
+    Route::post('/api/admin/templates/{template}/publish', [AdminTemplateController::class, 'publish'])->middleware(ProtectEditorRevision::class);
+    Route::post('/api/admin/templates/{template}/revert', [AdminTemplateController::class, 'revert'])->middleware(ProtectEditorRevision::class);
+    Route::get('/api/admin/templates/{template}/assets', [TemplateMediaController::class, 'index']);
+    Route::post('/api/admin/templates/{template}/upload', [TemplateMediaController::class, 'store'])->middleware('throttle:30,1');
+    Route::post('/api/admin/templates/{template}/delete-asset', [TemplateMediaController::class, 'destroy']);
+    Route::get('/admin', [AdminController::class, 'page'])->name('admin');
+    Route::get('/admin/bios/{bio}/edit', [AdminController::class, 'editPage']);
+    Route::get('/api/admin/bios', [AdminController::class, 'index']);
+    Route::post('/api/admin/bios', [AdminController::class, 'store']);
+    Route::patch('/api/admin/bios/{bio}', [AdminController::class, 'update']);
+    Route::delete('/api/admin/bios/{bio}', [AdminController::class, 'destroy'])->middleware('throttle:10,1');
+    Route::patch('/api/admin/bios/{bio}/account', [AdminController::class, 'updateAccount']);
+    Route::get('/api/admin/bios/{bio}/password', [AdminController::class, 'password']);
+    Route::post('/api/admin/bios/{bio}/impersonate', [AdminController::class, 'impersonate']);
+    Route::get('/admin/bios/{bio}/enter-editor', [AdminController::class, 'enterEditor']);
+    Route::post('/api/admin/bios/{bio}/reset-password', [AdminController::class, 'resetPassword']);
+
+    // O admin permanece autenticado durante a edição, portanto stop-impersonating
+    // também fica no grupo admin.
+    Route::post('/api/admin/stop-impersonating', [AdminController::class, 'stopImpersonating']);
+
+    Route::post('/api/admin/bios/{bio}/billing/link', [AdminController::class, 'billingLink'])->middleware('throttle:10,1');
+    Route::post('/api/admin/bios/{bio}/billing/send-link', [AdminController::class, 'sendBillingLink'])->middleware('throttle:10,1');
+
+    Route::post('/api/admin/bios/{bio}/billing/cancel-pending', [AdminController::class, 'cancelPendingCheckout'])->middleware('throttle:10,1');
+    Route::post('/api/admin/bios/{bio}/billing/release', [AdminController::class, 'releasePayment'])->middleware('throttle:10,1');
+    Route::post('/api/admin/bios/{bio}/billing/sync', [AdminController::class, 'syncBilling'])->middleware('throttle:10,1');
+    Route::get('/api/admin/bios/{bio}', [AdminController::class, 'show']);
+    Route::post('/api/admin/bios/{bio}/domain', [AdminController::class, 'saveDomain']);
+    Route::post('/api/admin/bios/{bio}/domain/verify', [AdminController::class, 'verifyDomain']);
+    Route::put('/api/admin/bios/{bio}/domain/ftp', [AdminController::class, 'saveDomainFtp']);
+    Route::post('/api/admin/bios/{bio}/domain/ftp/upload', [AdminController::class, 'uploadDomainFtp']);
+    Route::delete('/api/admin/bios/{bio}/domain', [AdminController::class, 'destroyDomain']);
+    Route::get('/api/admin/bios/{bio}/embed-html', [AdminController::class, 'embedHtml']);
+
+    Route::post('/api/admin/bios/{bio}/setup-coupon', [AdminCouponController::class, 'setup'])->middleware('throttle:20,1');
+    Route::get('/api/admin/coupons', [AdminCouponController::class, 'index']);
+    Route::post('/api/admin/coupons', [AdminCouponController::class, 'store'])->middleware('throttle:20,1');
+    Route::patch('/api/admin/coupons/{coupon}', [AdminCouponController::class, 'update']);
+    Route::get('/api/admin/billing/health', fn (BillingMonitor $monitor) => response()->json($monitor->status()));
+    Route::get('/api/admin/settings', [AdminSettingsController::class, 'show']);
+    Route::put('/api/admin/settings', [AdminSettingsController::class, 'update']);
+    Route::post('/api/admin/settings/test-cloudflare', [AdminSettingsController::class, 'testCloudflare']);
+});
